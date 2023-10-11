@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector.h>
-#include <matrix3.h>
+#include <matrix.h>
 
 namespace bla = ASC_bla;
 
@@ -28,7 +28,7 @@ int main()
   // Initialize the matrix with some values
     for (int i = 0; i < 5; ++i) {
         for (int j = 0; j < 5; ++j) {
-            if (i==j) { Matrix1(i, j) = 1;}
+            if (i==j) { Matrix1(i, j) = i;}
             else { Matrix1(i, j) = 0;}
             Matrix2(i,j) = i+j;
         }
@@ -40,4 +40,11 @@ int main()
     //testing Matrix-Matrix multiplication
     bla::Matrix<double, bla::ORDERING::ColMajor> Matrix3 = Matrix1 * Matrix2;
     std::cout << "Matrix3: \n" << Matrix3 << std::endl;
+    //testing transpose
+    std::cout << "transposed Matrix3: \n" << Matrix3.transpose() << std::endl;
+    //testing Matrix-Vector multiplication
+    std::cout << "A*z = " << Matrix1 * z << std::endl;
+    //Praying it will work...
+
+
 }

@@ -1,5 +1,5 @@
-#ifndef FILE_MATRIX3_H
-#define FILE_MATRIX3_H
+#ifndef FILE_MATRIX_H
+#define FILE_MATRIX_H
 
 #include <iostream>
 
@@ -99,6 +99,50 @@ Matrix operator*(const Matrix& other) const {
     }
     return result;
 }
+// Transpose method
+        Matrix<T, ORD> transpose() const {
+            Matrix<T, ORD> result(cols_, rows_);
+            for (size_t i = 0; i < rows_; ++i) {
+                for (size_t j = 0; j < cols_; ++j) {
+                    result(j, i) = (*this)(i, j);
+                }
+            }
+            return result;
+        }
+        // Matrix-Vector Multiplication
+        Vector<T> operator*(const Vector<T>& vector) const {
+            if constexpr (ORD == ORDERING::ColMajor) {
+                if (cols_ != vector.Size()) {
+                    // Invalid multiplication, return an empty vector or throw an exception
+                    return Vector<T>(0);
+                }
+
+                Vector<T> result(rows_);
+                for (size_t i = 0; i < rows_; ++i) {
+                    T sum = 0;
+                    for (size_t j = 0; j < cols_; ++j) {
+                        sum += (*this)(i, j) * vector(j);
+                    }
+                    result(i) = sum;
+                }
+                return result;
+            } else {
+                if (rows_ != vector.Size()) {
+                    // Invalid multiplication, return an empty vector or throw an exception
+                    return Vector<T>(0);
+                }
+
+                Vector<T> result(cols_);
+                for (size_t j = 0; j < cols_; ++j) {
+                    T sum = 0;
+                    for (size_t i = 0; i < rows_; ++i) {
+                        sum += (*this)(i, j) * vector(i);
+                    }
+                    result(j) = sum;
+                }
+                return result;
+            }
+        }
     };
 }
 #endif
