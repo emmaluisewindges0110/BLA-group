@@ -36,18 +36,18 @@ public:
         // Accessor to get a specific element of the matrix
         T& operator()(int row, int col) {
             if (ORD == Ordering::ColMajor) {
-                return data_(col)(row);
+                return data_[col](row);
             } else {
-                return data_(row)(col);
+                return data_[row](col);
             }
         }
 
         // Const accessor to get a specific element of the matrix
         const T& operator()(int row, int col) const {
             if (ORD == Ordering::ColMajor) {
-                return data_[col][row];
+                return data_[col](row);
             } else {
-                return data_[row][col];
+                return data_[row](col);
             }
         }
 
