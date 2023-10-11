@@ -28,13 +28,23 @@ namespace ASC_bla {
         ~Matrix() = default;
 
         // Access operator for element (i, j)
-        T& operator()(size_t i, size_t j) {
-            if constexpr (ORD == ORDERING::ColMajor) {
-                return data_(i + j * rows_);
-            } else {
-                return data_(j + i * cols_);
-            }
-        }
+T& operator()(size_t i, size_t j) {
+    if constexpr (ORD == ORDERING::ColMajor) {
+        return data_(i + j * rows_);
+    } else {
+        return data_(j + i * cols_);
+    }
+}
+
+// Const version of the access operator
+const T& operator()(size_t i, size_t j) const {
+    if constexpr (ORD == ORDERING::ColMajor) {
+        return data_(i + j * rows_);
+    } else {
+        return data_(j + i * cols_);
+    }
+}
+
 
         // Assignment operator
         Matrix& operator=(const Matrix& other) {
@@ -65,6 +75,30 @@ namespace ASC_bla {
             }
             return os;
         }
+        // Matrix-Matrix Multiplication
+Matrix operator*(const Matrix& other) const {
+    if (cols_ != other.rows_) {
+        // Invalid multiplication, return an empty matrix or throw an exception
+        return Matrix(0, 0);
+    }
+
+    Matrix result(rows_, other.cols_);
+
+    for (size_t i = 0; i < rows_; ++i) {
+        for (size_t j = 0; j < other.cols_; ++j) {
+            T sum = 0;
+            for (size_t k = 0; k < cols_; ++k) {
+                if constexpr (ORD == ORDERING::ColMajor) {
+                    sum += (*this)(i, k) * other(k, j);
+                } else {
+                    sum += (*this)(i, k) * other(k, j);
+                }
+            }
+            result(i, j) = sum;
+        }
+    }
+    return result;
+}
     };
 }
 #endif
