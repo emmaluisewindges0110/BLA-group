@@ -8,22 +8,22 @@ namespace ASC_bla
 {
 enum ORDERING { ColMajor, RowMajor };
 
-template <typename R, ORDERING ORD>
+template <typename T, ORDERING ORD>
 class Matrix
 {
     size_t rows_;
     size_t columns_;
-    R **data_;
+    T **data_;
 
 public:
     // Constructor to create a matrix with specified rows and columns
     Matrix(size_t rows, size_t columns)
         : rows_(rows), columns_(columns)
     {
-        data_ = new R *[rows_];
+        data_ = new T *[rows_];
         for (size_t i = 0; i < rows_; ++i)
         {
-            data_[i] = new R[columns_];
+            data_[i] = new T[columns_];
         }
     }
 
@@ -66,7 +66,7 @@ public:
         delete[] data_;
     }
     // Overload () operator to access elements of the matrix
-R& operator() (size_t row, size_t col)
+T& operator() (size_t row, size_t col)
 {
     if (ORD == ColMajor)
     {
@@ -79,7 +79,7 @@ R& operator() (size_t row, size_t col)
 }
 
 // Overload () operator for const access to elements
-const R& operator() (size_t row, size_t col) const
+const T& operator() (size_t row, size_t col) const
 {
     if (ORD == ColMajor)
     {
@@ -92,7 +92,7 @@ const R& operator() (size_t row, size_t col) const
 }
 
 // Overload = operator for assignment
-Matrix<R, ORD>& operator= (const Matrix<R, ORD>& other)
+Matrix<T, ORD>& operator= (const Matrix<T, ORD>& other)
 {
     if (this != &other)
     {
@@ -108,10 +108,10 @@ Matrix<R, ORD>& operator= (const Matrix<R, ORD>& other)
         columns_ = other.columns_;
 
         // Allocate new data
-        data_ = new R *[rows_];
+        data_ = new T *[rows_];
         for (size_t i = 0; i < rows_; ++i)
         {
-            data_[i] = new R[columns_];
+            data_[i] = new T[columns_];
         }
 
         // Copy data
@@ -187,25 +187,25 @@ Matrix<T, ORD> MatrixMatrixMultiply(const Matrix<T, ORD> &mat1, const Matrix<T, 
 }
 
 // Vector-Matrix Multiplication
-template <typename R, ORDERING ORD>
-Matrix<R, ORD> VectorMatrixMultiply(const Vector<R> &vec, const Matrix<R, ORD> &mat)
+template <typename T, ORDERING ORD>
+Matrix<T, ORD> VectorMatrixMultiply(const Vector<T> &vec, const Matrix<T, ORD> &mat)
 {
     if (ORD == ColMajor)
     {
-        if (vec.size() != mat.NumRows())
+        if (vec.Size() != mat.NumRows())
         {
             throw std::invalid_argument("Vector size must match matrix number of rows for multiplication.");
         }
 
         size_t numCols = mat.NumColumns();
-        Matrix<R, ORD> result(1, numCols);
+        Matrix<T, ORD> result(1, numCols);
 
         for (size_t j = 0; j < numCols; ++j)
         {
-            R sum = 0;
-            for (size_t i = 0; i < vec.size(); ++i)
+            T sum = 0;
+            for (size_t i = 0; i < vec.Size(); ++i)
             {
-                sum += vec[i] * mat(i, j);
+                sum += vec(i) * mat(i, j);
             }
             result(0, j) = sum;
         }
@@ -214,20 +214,20 @@ Matrix<R, ORD> VectorMatrixMultiply(const Vector<R> &vec, const Matrix<R, ORD> &
     }
     else // ORD == RowMajor
     {
-        if (vec.size() != mat.NumColumns())
+        if (vec.Size() != mat.NumColumns())
         {
             throw std::invalid_argument("Vector size must match matrix number of columns for multiplication.");
         }
 
         size_t numRows = mat.NumRows();
-        Matrix<R, ORD> result(numRows, 1);
+        Matrix<T, ORD> result(numRows, 1);
 
         for (size_t i = 0; i < numRows; ++i)
         {
-            R sum = 0;
-            for (size_t j = 0; j < vec.size(); ++j)
+            T sum = 0;
+            for (size_t j = 0; j < vec.Size(); ++j)
             {
-                sum += mat(i, j) * vec[j];
+                sum += mat(i, j) * vec(j);
             }
             result(i, 0) = sum;
         }
@@ -237,13 +237,13 @@ Matrix<R, ORD> VectorMatrixMultiply(const Vector<R> &vec, const Matrix<R, ORD> &
 }
 
 // Transposition of Matrix
-template <typename R, ORDERING ORD>
-Matrix<R, ORD> Transpose(const Matrix<R, ORD> &mat)
+template <typename T, ORDERING ORD>
+Matrix<T, ORD> Transpose(const Matrix<T, ORD> &mat)
 {
     size_t numRows = mat.NumRows();
     size_t numCols = mat.NumColumns();
 
-    Matrix<R, ORD> result(numCols, numRows);
+    Matrix<T, ORD> result(numCols, numRows);
 
     for (size_t i = 0; i < numRows; ++i)
     {
@@ -264,15 +264,15 @@ Matrix<R, ORD> Transpose(const Matrix<R, ORD> &mat)
 }
 
 // Overload * operator for Vector-Matrix Multiplication
-template <typename R, ORDERING ORD>
-Matrix<R, ORD> operator* (const Vector<R> &vec, const Matrix<R, ORD> &mat)
+template <typename T, ORDERING ORD>
+Matrix<T, ORD> operator* (const Vector<T> &vec, const Matrix<T, ORD> &mat)
 {
     return VectorMatrixMultiply(vec, mat);
 }
 
 // Overload * operator for Matrix-Matrix Multiplication
-template <typename R, ORDERING ORD>
-Matrix<R, ORD> operator* (const Matrix<R, ORD> &mat1, const Matrix<R, ORD> &mat2)
+template <typename T, ORDERING ORD>
+Matrix<T, ORD> operator* (const Matrix<T, ORD> &mat1, const Matrix<T, ORD> &mat2)
 {
     return MatrixMatrixMultiply(mat1, mat2);
 }
