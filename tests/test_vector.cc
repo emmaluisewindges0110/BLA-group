@@ -25,7 +25,7 @@ int main()
   //creating Matrix examples
   bla::Matrix<double, bla::ORDERING::ColMajor> Matrix1(5, 5);
   bla::Matrix<double, bla::ORDERING::ColMajor> Matrix2(5, 5);
-  // Initialize the matrix with some values
+  // Initialize the ColMajor matrix with some values
     for (int i = 0; i < 5; ++i) {
         for (int j = 0; j < 5; ++j) {
             if (i==j) { Matrix1(i, j) = i;}
@@ -44,7 +44,17 @@ int main()
     std::cout << "transposed Matrix3: \n" << Matrix3.transpose() << std::endl;
     //testing Matrix-Vector multiplication
     std::cout << "A*z = " << Matrix1 * z << std::endl;
-    //Praying it will work...
+    
+    
+    //testing RowMajor Matices
+    bla::Matrix<double, bla::ORDERING::RowMajor> Matrix4(5, 5);
+for (int i = 0; i < 5; ++i) {
+        for (int j = 0; j < 5; ++j) {
+            Matrix4(i,j) = i+j;
+        }
+    }
+std::cout << "Matrix 4 (RowMajor):\n" << Matrix4 << std::endl;
 
-
+//testing difference between ColMajor and RowMajor
+std::cout << "Matrix 2 (ColMajor):\n" << Matrix2 << std::endl;
 }
