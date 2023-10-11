@@ -72,7 +72,7 @@ public:
 
                 for (int i = 0; i < rows_; ++i) {
                     for (int j = 0; j < cols_; ++j) {
-                        result(i) += data_(i)(j) * vec(j);
+                        result(i) += data_[i](j) * vec(j);
                     }
                 }
 
@@ -86,7 +86,7 @@ public:
 
                 for (int i = 0; i < cols_; ++i) {
                     for (int j = 0; j < rows_; ++j) {
-                        result(i) += data_(j)(i) * vec(j);
+                        result(i) += data_[j](i) * vec(j);
                     }
                 }
 
