@@ -1,0 +1,70 @@
+#ifndef FILE_MATRIX3_H
+#define FILE_MATRIX3_H
+
+#include <iostream>
+
+#include "vector.h" // Assuming your Vector class is in "vector.h"
+
+namespace ASC_bla {
+    enum class ORDERING { ColMajor, RowMajor };
+
+    template <typename T, ORDERING ORD>
+    class Matrix {
+        size_t rows_;
+        size_t cols_;
+        Vector<T> data_;
+
+    public:
+        // Constructors
+        Matrix(size_t rows, size_t cols) : rows_(rows), cols_(cols), data_(rows * cols) {}
+
+        // Copy constructor
+        Matrix(const Matrix& other) : rows_(other.rows_), cols_(other.cols_), data_(other.data_) {}
+
+        // Move constructor
+        Matrix(Matrix&& other) noexcept : rows_(other.rows_), cols_(other.cols_), data_(std::move(other.data_)) {}
+
+        // Destructor
+        ~Matrix() = default;
+
+        // Access operator for element (i, j)
+        T& operator()(size_t i, size_t j) {
+            if constexpr (ORD == ORDERING::ColMajor) {
+                return data_(i + j * rows_);
+            } else {
+                return data_(j + i * cols_);
+            }
+        }
+
+        // Assignment operator
+        Matrix& operator=(const Matrix& other) {
+            if (this != &other) {
+                rows_ = other.rows_;
+                cols_ = other.cols_;
+                data_ = other.data_;
+            }
+            return *this;
+        }
+
+        // Output stream operator for easy printing
+        friend std::ostream& operator<<(std::ostream& os, const Matrix& matrix) {
+            for (size_t i = 0; i < matrix.rows_; ++i) {
+                if (i > 0) {
+                    os << "\n";
+                }
+                for (size_t j = 0; j < matrix.cols_; ++j) {
+                    if (j > 0) {
+                        os << " ";
+                    }
+                    if constexpr (ORD == ORDERING::ColMajor) {
+                        os << matrix.data_(i + j * matrix.rows_);
+                    } else {
+                        os << matrix.data_(j + i * matrix.cols_);
+                    }
+                }
+            }
+            return os;
+        }
+    };
+}
+#endif
