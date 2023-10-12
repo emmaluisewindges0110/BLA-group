@@ -65,7 +65,15 @@ namespace ASC_bla
       ost << ", " << v(i);
     return ost;
   }
-  
+
+  template <typename T>
+  class MatrixExpr
+  {
+  public:
+    auto Upcast() const { return static_cast<const T&> (*this); }
+    size_t Size() const { return Upcast().Size(); }
+    auto operator() (size_t i) const { return Upcast()(i); }
+  };  
 }
  
 #endif

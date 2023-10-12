@@ -9,41 +9,110 @@ namespace ASC_bla {
     enum class ORDERING { ColMajor, RowMajor };
 
     template <typename T, ORDERING ORD>
-    class Matrix {
-        size_t rows_;
-        size_t cols_;
-        Vector<T> data_;
+    class MatrixView : public MatrixExpr<MatrixView<T, ORD>>
+    {
+        protected:
+        T* data_;
+        size_t rows_, cols_, dist_;
 
+        public:
+        MatrixView (size_t rows, size_t cols, size_t dist, T * data) : data_(data), rows_(rows), cols_(cols), dist_(dist) {}
+        
+        template <typename TB>
+        MatrixView& operator= (const MatrixExpr<TB>& v2)
+        {
+            for (size_t i = 0; i < rows_; i++) {
+                for (size_t j = 0; j < cols_; ++j) {
+                    (*this)(i, j) = v2(i, j);
+                }
+            }
+            return *this;
+        }
+
+        MatrixView& operator= (T scal)
+        {
+            for (size_t i = 0; i < rows_; i++) {
+                for (size_t j = 0; j < cols_; ++j) {
+                    (*this)(i, j) = scal;
+                }
+            }
+            return *this;
+        }
+    
+        auto View() const { return MatrixView(rows_, cols_, dist_, data_); }
+        size_t Rows() const { return rows_; }
+        size_t Cols() const { return cols_; }
+
+        T& operator()(size_t i, size_t j) {
+            if constexpr (ORD == ORDERING::ColMajor) {
+                return data_(i + j * dist_);
+            } else {
+                return data_(j + i * dist_);
+            }
+        }
+
+        // Const version of the access operator
+        const T& operator()(size_t i, size_t j) const {
+            if constexpr (ORD == ORDERING::ColMajor) {
+                return data_(i + j * dist_);
+            } else {
+                return data_(j + i * dist_);
+            }
+        }
+
+        auto Row(size_t row) const {
+            if constexpr (ORD == ORDERING::ColMajor) {
+                return VectorView<T,size_t> (data_ + row, cols_, cols_);
+            } else {
+                return VectorView<T,size_t> (data_ + row * cols_, cols_);
+            }
+        }
+
+        auto Col(size_t col) const {
+            if constexpr (ORD == ORDERING::ColMajor) {
+                return VectorView<T,size_t> (data_ + col * rows_, rows_);
+            } else {
+                return VectorView<T,size_t> (data_ + col, rows_, rows_);
+            }
+        }
+    };
+
+    template <typename T, ORDERING ORD>
+    class Matrix : public MatrixView<T, ORD> {
+        typedef MatrixView<T, ORD> BASE;
+        using BASE::rows_;
+        using BASE::cols_;
+        using BASE::data_;
     public:
         // Constructors
-        Matrix(size_t rows, size_t cols) : rows_(rows), cols_(cols), data_(rows * cols) {}
+        Matrix(size_t rows, size_t cols) : MatrixView<T, ORD>(rows, cols, (ORD == ASC_bla::ORDERING::ColMajor) ? rows_ : cols_, new T[rows * cols]) {}
 
         // Copy constructor
-        Matrix(const Matrix& other) : rows_(other.rows_), cols_(other.cols_), data_(other.data_) {}
+        Matrix(const Matrix& other) : MatrixView<T, ORD>(other.rows_, other.cols_, other.dist_, other.data_) {}
 
         // Move constructor
-        Matrix(Matrix&& other) noexcept : rows_(other.rows_), cols_(other.cols_), data_(std::move(other.data_)) {}
+        Matrix(Matrix&& other) noexcept :  MatrixView<T, ORD>(other.rows_, other.cols_, other.dist_, std::move(other.data_)) {}
 
         // Destructor
         ~Matrix() = default;
 
         // Access operator for element (i, j)
-T& operator()(size_t i, size_t j) {
-    if constexpr (ORD == ORDERING::ColMajor) {
-        return data_(i + j * rows_);
-    } else {
-        return data_(j + i * cols_);
-    }
-}
+        T& operator()(size_t i, size_t j) {
+            if constexpr (ORD == ORDERING::ColMajor) {
+                return data_[i + j * rows_];
+            } else {
+                return data_[j + i * cols_];
+            }
+        }
 
-// Const version of the access operator
-const T& operator()(size_t i, size_t j) const {
-    if constexpr (ORD == ORDERING::ColMajor) {
-        return data_(i + j * rows_);
-    } else {
-        return data_(j + i * cols_);
-    }
-}
+        // Const version of the access operator
+        const T& operator()(size_t i, size_t j) const {
+            if constexpr (ORD == ORDERING::ColMajor) {
+                return data_[i + j * rows_];
+            } else {
+                return data_[j + i * cols_];
+            }
+        }
 
 
         // Assignment operator
@@ -66,11 +135,7 @@ const T& operator()(size_t i, size_t j) const {
                     if (j > 0) {
                         os << " ";
                     }
-                    if constexpr (ORD == ORDERING::ColMajor) {
-                        os << matrix.data_(i + j * matrix.rows_);
-                    } else {
-                        os << matrix.data_(j + i * matrix.cols_);
-                    }
+                    os << matrix(i, j);
                 }
             }
             return os;
