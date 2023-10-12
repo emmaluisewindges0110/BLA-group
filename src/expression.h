@@ -71,9 +71,47 @@ namespace ASC_bla
     {
     public:
         auto Upcast() const { return static_cast<const T&> (*this); }
-        size_t Size() const { return Upcast().Size(); }
-        auto operator() (size_t i) const { return Upcast()(i); }
-    };  
+        size_t Rows() const { return Upcast().Rows(); }
+        size_t Cols() const { return Upcast().Cols(); }
+        auto operator() (size_t i, size_t j) const { return Upcast()(i, j); }
+    };
+    
+ 
+    template <typename TA, typename TB>
+    class SumMatrixExpr : public MatrixExpr<SumMatrixExpr<TA, TB>>
+    {
+        TA a_;
+        TB b_;
+    public:
+        SumMatrixExpr (TA a, TB b) : a_(a), b_(b) {}
+
+        auto operator() (size_t i, size_t j) const { return a_(i, j) + b_(i, j); }
+        size_t Rows() const { return a_.Rows(); }      
+        size_t Cols() const { return a_.Cols(); }      
+    };
+    
+    template <typename TA, typename TB>
+    auto operator+ (const MatrixExpr<TA> & a, const MatrixExpr<TB> & b)
+    {
+        return SumMatrixExpr(a.Upcast(), b.Upcast());
+    }
+
+    // Output stream operator for easy printing
+    template <typename T>
+    std::ostream& operator<<(std::ostream& os, const MatrixExpr<T>& matrix) {
+        for (size_t i = 0; i < matrix.Rows(); ++i) {
+            if (i > 0) {
+                os << "\n";
+            }
+            for (size_t j = 0; j < matrix.Cols(); ++j) {
+                if (j > 0) {
+                    os << " ";
+                }
+                os << matrix(i, j);
+            }
+        }
+        return os;
+    }
 }
  
 #endif

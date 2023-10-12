@@ -15,7 +15,7 @@ namespace ASC_bla
   class VectorView : public VecExpr<VectorView<T,TDIST>>
   {
   protected:
-    T * data_;
+    T* data_;
     size_t size_;
     TDIST dist_;
   public:
