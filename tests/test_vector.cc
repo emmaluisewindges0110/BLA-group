@@ -54,6 +54,15 @@ int main()
 
     std::cout << "Produkt: \n" << (Matrix1 * Matrix2) << std::endl;
 
+    bla::Vector<double> v(5);
+    v(0) = 1;
+    v(1) = 2;
+    v(2) = 3;
+    v(3) = 4;
+    v(4) = 5;
+
+    std::cout << "MV Produkt: \n" << (Matrix2 * v) << std::endl;
+
     
     // //testing RowMajor Matices
     // bla::Matrix<double, bla::ORDERING::RowMajor> Matrix4(5, 5);

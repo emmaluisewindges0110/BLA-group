@@ -124,6 +124,34 @@ namespace ASC_bla
     {
         return MatrixMatrixProdExpr(a.Upcast(), b.Upcast());
     }
+    
+ 
+    template <typename TA, typename TB>
+    class MatrixVectorProdExpr : public VecExpr<MatrixVectorProdExpr<TA, TB>>
+    {
+        TA a_;
+        TB b_;
+    public:
+        MatrixVectorProdExpr (TA a, TB b) : a_(a), b_(b) {}
+
+        auto operator() (size_t i) const {
+            auto row = a_.Row(i);
+            auto col = b_;
+
+            auto sum = 0;
+            for (int k = 0; k < a_.Cols(); ++k) {
+                sum += row(k) * col(k);
+            }
+            return sum;
+        }
+        size_t Size() const { return a_.Rows(); }     
+    };
+    
+    template <typename TA, typename TB>
+    auto operator* (const MatrixExpr<TA>& a, const VecExpr<TB>& b)
+    {
+        return MatrixVectorProdExpr(a.Upcast(), b.Upcast());
+    }
 
 
 
