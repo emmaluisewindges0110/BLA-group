@@ -37,10 +37,10 @@ int main()
   // Initialize the ColMajor matrix with some values
     for (int i = 0; i < 5; ++i) {
         for (int j = 0; j < 5; ++j) {
-            // if (i==j) { Matrix1(i, j) = i;}
-            // else { Matrix1(i, j) = 0;}
-            // Matrix2(i, j) = i+j;
-            Matrix2(i, j) = i + j * 5;
+            if (i==j) { Matrix1(i, j) = i;}
+            else { Matrix1(i, j) = 0;}
+            Matrix2(i, j) = i+j;
+            // Matrix2(i, j) = i + j * 5;
         }
     }
   //testing Matrix initialization and printing
@@ -52,15 +52,8 @@ int main()
     std::cout << "Matrix2 Zeile 3 " << std::endl << Matrix2.Row(3) << std::endl;
     std::cout << "Matrix2 Spalte 2 " << std::endl << Matrix2.Col(2) << std::endl;  
 
+    std::cout << "Produkt: \n" << (Matrix1 * Matrix2) << std::endl;
 
-    // //testing Matrix-Matrix multiplication
-    // bla::Matrix<double, bla::ORDERING::ColMajor> Matrix3 = Matrix1 * Matrix2;
-    // std::cout << "Matrix3: \n" << Matrix3 << std::endl;
-    // //testing transpose
-    // std::cout << "transposed Matrix3: \n" << Matrix3.transpose() << std::endl;
-    // //testing Matrix-Vector multiplication
-    // std::cout << "A*z = " << Matrix1 * z << std::endl;
-    
     
     // //testing RowMajor Matices
     // bla::Matrix<double, bla::ORDERING::RowMajor> Matrix4(5, 5);

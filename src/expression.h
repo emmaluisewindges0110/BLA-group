@@ -95,6 +95,40 @@ namespace ASC_bla
     {
         return SumMatrixExpr(a.Upcast(), b.Upcast());
     }
+    
+ 
+    template <typename TA, typename TB>
+    class MatrixMatrixProdExpr : public MatrixExpr<MatrixMatrixProdExpr<TA, TB>>
+    {
+        TA a_;
+        TB b_;
+    public:
+        MatrixMatrixProdExpr (TA a, TB b) : a_(a), b_(b) {}
+
+        auto operator() (size_t i, size_t j) const {
+            auto row = a_.Row(i);
+            auto col = b_.Col(j);
+
+            auto sum = 0;
+            for (int k = 0; k < a_.Cols(); ++k) {
+                sum += row(k) * col(k);
+            }
+            return sum;
+        }
+        size_t Rows() const { return a_.Rows(); }      
+        size_t Cols() const { return a_.Cols(); }      
+    };
+    
+    template <typename TA, typename TB>
+    auto operator* (const MatrixExpr<TA>& a, const MatrixExpr<TB>& b)
+    {
+        return MatrixMatrixProdExpr(a.Upcast(), b.Upcast());
+    }
+
+
+
+
+
 
     // Output stream operator for easy printing
     template <typename T>
