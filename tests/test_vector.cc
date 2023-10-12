@@ -7,9 +7,7 @@ namespace bla = ASC_bla;
 
 int main()
 {
-
-  //creating Vektor examples
-  size_t n = 5;
+  size_t n = 10;
   bla::Vector<double> x(n), y(n);
 
   for (size_t i = 0; i < x.Size(); i++)
@@ -21,6 +19,17 @@ int main()
   bla::Vector<double> z = x+y;
   
   std::cout << "x+y = " << z << std::endl;
+  
+  std::cout << "type of (x+3*y) is  " << typeid(x+3*y).name() << std::endl;
+
+  std::cout << "x+3*y = " << x+3*y << std::endl;
+
+  std::cout << "sizeof(x+3*y) = " << sizeof(x+3*y) << std::endl;
+  
+  x.Range(2,9) = 3;
+  x.Slice(1,5) = 10;
+  
+  std::cout << "x = " << x << std::endl;  
 
   //creating Matrix examples
   bla::Matrix<double, bla::ORDERING::ColMajor> Matrix1(5, 5);
@@ -48,13 +57,13 @@ int main()
     
     //testing RowMajor Matices
     bla::Matrix<double, bla::ORDERING::RowMajor> Matrix4(5, 5);
-for (int i = 0; i < 5; ++i) {
+    for (int i = 0; i < 5; ++i) {
         for (int j = 0; j < 5; ++j) {
             Matrix4(i,j) = i+j;
         }
     }
-std::cout << "Matrix 4 (RowMajor):\n" << Matrix4 << std::endl;
+    std::cout << "Matrix 4 (RowMajor):\n" << Matrix4 << std::endl;
 
-//testing difference between ColMajor and RowMajor
-std::cout << "Matrix 2 (ColMajor):\n" << Matrix2 << std::endl;
+    //testing difference between ColMajor and RowMajor
+    std::cout << "Matrix 2 (ColMajor):\n" << Matrix2 << std::endl;
 }
