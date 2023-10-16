@@ -62,17 +62,37 @@ namespace ASC_bla {
 
         auto Row(size_t row) const {
             if constexpr (ORD == ORDERING::ColMajor) {
-                return VectorView<T,size_t> (cols_, cols_, data_ + row);
+                return VectorView<T,size_t> (cols_, dist_, data_ + row);
             } else {
-                return VectorView<T,size_t> (cols_, 1, data_ + row * cols_);
+                return VectorView<T> (cols_, data_ + row * dist_);
             }
         }
 
         auto Col(size_t col) const {
             if constexpr (ORD == ORDERING::ColMajor) {
-                return VectorView<T,size_t> (rows_, 1, data_ + col * rows_);
+                return VectorView<T> (rows_, data_ + col * dist_);
             } else {
-                return VectorView<T,size_t> (rows_, rows_, data_ + col);
+                return VectorView<T,size_t> (rows_, dist_, data_ + col);
+            }
+        }
+
+        auto Rows(size_t first, size_t next) {
+            size_t n_rows = next - first;
+
+            if constexpr (ORD == ORDERING::ColMajor) {
+                return MatrixView<T, ORD> (n_rows, cols_, dist_, data_ + first);
+            } else {
+                return MatrixView<T, ORD> (n_rows, cols_, dist_, data_ + first * dist_);
+            }
+        }
+
+        auto Cols(size_t first, size_t next) {
+            size_t n_cols = next - first;
+
+            if constexpr (ORD == ORDERING::ColMajor) {
+                return MatrixView<T, ORD> (rows_, n_cols, dist_, data_ + first * dist_);
+            } else {
+                return MatrixView<T, ORD> (rows_, n_cols, dist_, data_ + first);
             }
         }
     };
