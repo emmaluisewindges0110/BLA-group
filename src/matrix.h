@@ -95,6 +95,14 @@ namespace ASC_bla {
                 return MatrixView<T, ORD> (rows_, n_cols, dist_, data_ + first);
             }
         }
+
+        auto Transpose() {
+            if constexpr (ORD == ORDERING::ColMajor) {
+                return MatrixView<T, ORDERING::RowMajor>(cols_, rows_, dist_, data_);
+            } else {
+                return MatrixView<T, ORDERING::ColMajor>(cols_, rows_, dist_, data_);
+            }
+        }
     };
 
     template <typename T, ORDERING ORD>

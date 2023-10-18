@@ -82,10 +82,13 @@ int main()
     std::cout << "Matrix2.Rows(2, 4):" << std::endl;
     auto test = Matrix2.Rows(2, 4);
     std::cout << test << std::endl;
-    std::cout << "Matrix2.Rows(2, 4).Cols(3, 5):" << std::endl;
-    auto test2 = test.Cols(3, 5);
+    std::cout << "Matrix2.Rows(2, 4).Cols(2, 5):" << std::endl;
+    auto test2 = test.Cols(2, 5);
     std::cout << test2 << std::endl;
 
-    std::cout << "Matrix2.Rows(2, 4).Cols(3, 5).Col(1)" << std::endl;
+    std::cout << "Matrix2.Rows(2, 4).Cols(2, 5).Col(1)" << std::endl;
     std::cout << test2.Col(1) << std::endl;
+
+    std::cout << "Matrix2.Rows(2, 4).Cols(2, 5).Transpose()" << std::endl;
+    std::cout << test2.Transpose() << std::endl;
 }
