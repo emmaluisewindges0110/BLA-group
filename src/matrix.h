@@ -17,7 +17,7 @@ namespace ASC_bla {
 
         public:
         MatrixView (size_t rows, size_t cols, size_t dist, T * data) : data_(data), rows_(rows), cols_(cols), dist_(dist) {}
-        
+
         template <typename TB>
         MatrixView& operator= (const MatrixExpr<TB>& v2)
         {
@@ -38,7 +38,7 @@ namespace ASC_bla {
             }
             return *this;
         }
-    
+
         auto View() const { return MatrixView(rows_, cols_, dist_, data_); }
         size_t Rows() const { return rows_; }
         size_t Cols() const { return cols_; }

@@ -47,5 +47,8 @@
         "optional": "cpp",
         "fstream": "cpp",
         "sstream": "cpp"
-    }
+    },
+    "files.trimFinalNewlines": true,
+    "files.trimTrailingWhitespace": true,
+    "diffEditor.ignoreTrimWhitespace": false
 }

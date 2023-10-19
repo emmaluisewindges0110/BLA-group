@@ -13,8 +13,8 @@ namespace ASC_bla
         size_t Size() const { return Upcast().Size(); }
         auto operator() (size_t i) const { return Upcast()(i); }
     };
-    
- 
+
+
     template <typename TA, typename TB>
     class SumVecExpr : public VecExpr<SumVecExpr<TA,TB>>
     {
@@ -24,9 +24,9 @@ namespace ASC_bla
         SumVecExpr (TA a, TB b) : a_(a), b_(b) { }
 
         auto operator() (size_t i) const { return a_(i)+b_(i); }
-        size_t Size() const { return a_.Size(); }      
+        size_t Size() const { return a_.Size(); }
     };
-    
+
     template <typename TA, typename TB>
     auto operator+ (const VecExpr<TA> & a, const VecExpr<TB> & b)
     {
@@ -35,7 +35,7 @@ namespace ASC_bla
 
 
 
-    
+
     template <typename TSCAL, typename TV>
     class ScaleVecExpr : public VecExpr<ScaleVecExpr<TSCAL,TV>>
     {
@@ -45,9 +45,9 @@ namespace ASC_bla
         ScaleVecExpr (TSCAL scal, TV vec) : scal_(scal), vec_(vec) { }
 
         auto operator() (size_t i) const { return scal_*vec_(i); }
-        size_t Size() const { return vec_.Size(); }      
+        size_t Size() const { return vec_.Size(); }
     };
-    
+
     template <typename T>
     auto operator* (double scal, const VecExpr<T> & v)
     {
@@ -75,8 +75,8 @@ namespace ASC_bla
         size_t Cols() const { return Upcast().Cols(); }
         auto operator() (size_t i, size_t j) const { return Upcast()(i, j); }
     };
-    
- 
+
+
     template <typename TA, typename TB>
     class SumMatrixExpr : public MatrixExpr<SumMatrixExpr<TA, TB>>
     {
@@ -86,17 +86,17 @@ namespace ASC_bla
         SumMatrixExpr (TA a, TB b) : a_(a), b_(b) {}
 
         auto operator() (size_t i, size_t j) const { return a_(i, j) + b_(i, j); }
-        size_t Rows() const { return a_.Rows(); }      
-        size_t Cols() const { return a_.Cols(); }      
+        size_t Rows() const { return a_.Rows(); }
+        size_t Cols() const { return a_.Cols(); }
     };
-    
+
     template <typename TA, typename TB>
     auto operator+ (const MatrixExpr<TA> & a, const MatrixExpr<TB> & b)
     {
         return SumMatrixExpr(a.Upcast(), b.Upcast());
     }
-    
- 
+
+
     template <typename TA, typename TB>
     class MatrixMatrixProdExpr : public MatrixExpr<MatrixMatrixProdExpr<TA, TB>>
     {
@@ -115,17 +115,17 @@ namespace ASC_bla
             }
             return sum;
         }
-        size_t Rows() const { return a_.Rows(); }      
-        size_t Cols() const { return a_.Cols(); }      
+        size_t Rows() const { return a_.Rows(); }
+        size_t Cols() const { return a_.Cols(); }
     };
-    
+
     template <typename TA, typename TB>
     auto operator* (const MatrixExpr<TA>& a, const MatrixExpr<TB>& b)
     {
         return MatrixMatrixProdExpr(a.Upcast(), b.Upcast());
     }
-    
- 
+
+
     template <typename TA, typename TB>
     class MatrixVectorProdExpr : public VecExpr<MatrixVectorProdExpr<TA, TB>>
     {
@@ -144,9 +144,9 @@ namespace ASC_bla
             }
             return sum;
         }
-        size_t Size() const { return a_.Rows(); }     
+        size_t Size() const { return a_.Rows(); }
     };
-    
+
     template <typename TA, typename TB>
     auto operator* (const MatrixExpr<TA>& a, const VecExpr<TB>& b)
     {
@@ -175,5 +175,5 @@ namespace ASC_bla
         return os;
     }
 }
- 
+
 #endif

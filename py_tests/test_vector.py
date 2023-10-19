@@ -11,7 +11,7 @@ y = Vector(3)
 
 for i in range(len(x)):
     x[i] = i
-y[:] = 2    
+y[:] = 2
 
 print ("x =", x)
 print ("y =", y)
@@ -27,6 +27,3 @@ print (x)
 
 x[0:10:2] = 3
 print (x)
-
-
-
