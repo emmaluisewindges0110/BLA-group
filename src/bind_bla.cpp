@@ -48,7 +48,7 @@ PYBIND11_MODULE(bla, m) {
         })
 
         .def("__rmul__", [](Vector<double> & self, double scal) {
-            return Vector<double> (scal*self);
+            return Vector<double> (scal * self);
         })
 
         .def("__str__", [](const Vector<double> & self) {
@@ -88,5 +88,35 @@ PYBIND11_MODULE(bla, m) {
         .def_property_readonly("shape", [](const Matrix<double, ORDERING::RowMajor>& self) {
             return std::tuple(self.Rows(), self.Cols());
         })
+
+        .def("__add__", [](Matrix<double, ORDERING::RowMajor>& self, Matrix<double, ORDERING::RowMajor>& other) {
+            return Matrix<double, ORDERING::RowMajor>(self + other);
+        })
+
+        // .def("__rmul__", [](Matrix<double, ORDERING::RowMajor>& self, double scal) {
+        //     return Matrix<double, ORDERING::RowMajor>(scal * self);
+        // })
+
+        .def("__str__", [](const Matrix<double, ORDERING::RowMajor>& self) {
+            std::stringstream str;
+            str << self;
+            return str.str();
+        })
+
+        .def(py::pickle(
+            [](Matrix<double, ORDERING::RowMajor>& self) { // __getstate__
+                    /* return a tuple that fully encodes the state of the object */
+                return py::make_tuple(self.Rows(), self.Cols(), py::bytes((char*)(void*)&self(0, 0), self.Rows()*self.Cols()*sizeof(double)));
+            },
+            [](py::tuple t) { // __setstate__
+                if (t.size() != 3)
+                    throw std::runtime_error("should be a 3-tuple!");
+
+                Matrix<double, ORDERING::RowMajor> M(t[0].cast<size_t>(), t[1].cast<size_t>());
+                py::bytes mem = t[2].cast<py::bytes>();
+                std::memcpy(&M(0, 0), PYBIND11_BYTES_AS_STRING(mem.ptr()), M.Rows()*M.Cols()*sizeof(double));
+                return M;
+            }
+        ))
     ;
 }

@@ -8,5 +8,28 @@ from ASCsoft.bla import Matrix, Vector
 
 A = Matrix(3, 4)
 A[2, 3] = 4.0
+
+B = Matrix(3, 4)
+B[2, 3] = 2.0
+
 print(A[2, 3])
 print(A.shape)
+print(A)
+
+sum = (A + B)
+print(sum[2, 3])
+
+v = Vector(3)
+v[:] = 7
+
+import pickle
+f = open("file.txt", 'wb')
+pickle.dump([2,"hello", A], f)
+print("STORED")
+print(A)
+del f
+
+f2 = open("file.txt", 'rb')
+val = pickle.load(f2)
+print(val)
+print(val[2])

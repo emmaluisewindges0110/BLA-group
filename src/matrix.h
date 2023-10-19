@@ -121,15 +121,38 @@ namespace ASC_bla {
         // Move constructor
         Matrix(Matrix&& other) noexcept :  MatrixView<T, ORD>(other.rows_, other.cols_, other.dist_, std::move(other.data_)) {}
 
+        template <typename TB>
+        Matrix(const MatrixExpr<TB>& M) : Matrix(M.Rows(), M.Cols()) {
+            // *this = M;
+             for (size_t row = 0; row < M.Rows(); ++row) {
+                for (size_t col = 0; col < M.Cols(); ++col) {
+                    (*this)(row, col) = M(row, col);
+                }
+            }
+        }
+
         // Destructor
         ~Matrix() = default;
 
         // Assignment operator
-        Matrix& operator=(const Matrix& other) {
-            if (this != &other) {
-                rows_ = other.rows_;
-                cols_ = other.cols_;
-                data_ = other.data_;
+        using BASE::operator=;
+        Matrix& operator=(const Matrix& other)
+        {
+            for (size_t row = 0; row < other.Rows(); ++row) {
+                for (size_t col = 0; col < other.Cols(); ++col) {
+                    (*this)(row, col) = other(row, col);
+                }
+            }
+            return *this;
+        }
+
+        // Assignment operator
+        Matrix& operator=(Matrix&& other)
+        {
+            for (size_t row = 0; row < other.Rows(); ++row) {
+                for (size_t col = 0; col < other.Cols(); ++col) {
+                    (*this)(row, col) = other(row, col);
+                }
             }
             return *this;
         }
