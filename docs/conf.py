@@ -17,9 +17,9 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'ASC-bla'
-copyright = '2023, J. Schoeberl'
-author = 'J. Schoeberl'
+project = 'bla-group'
+copyright = '2023, Emma Windges, Paul Tirler, Peter Smek'
+author = 'Emma Windges, Paul Tirler, Peter Smek'
 
 
 # -- General configuration ---------------------------------------------------
