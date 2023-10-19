@@ -9,3 +9,11 @@ but a starting point for writing your own library, for example as a student's pr
 Here are notes on the
 [development process](https://jschoeberl.github.io/IntroSC/intro.html)
 
+
+## Install python bindings
+
+You can install the python bindings of this project via:
+
+`pip install git+https://github.com/emmaluisewindges0110/BLA-group.git`
+
+During development: `pip install . -v`
