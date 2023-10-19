@@ -2,6 +2,7 @@
 #include <pybind11/pybind11.h>
 
 #include "vector.h"
+#include "matrix.h"
 
 using namespace ASC_bla;
 namespace py = pybind11;
@@ -71,5 +72,16 @@ PYBIND11_MODULE(bla, m) {
                 std::memcpy(&v(0), PYBIND11_BYTES_AS_STRING(mem.ptr()), v.Size()*sizeof(double));
                 return v;
             }))
+    ;
+
+    py::class_<Matrix<double, ORDERING::RowMajor>>(m, "Matrix")
+        .def(py::init<size_t, size_t>(), py::arg("rows"), py::arg("cols"), "create matrix of the given size")
+
+        .def("__getitem__", [](Matrix<double, ORDERING::RowMajor> self, std::tuple<int, int> ind) {
+            return self(std::get<0>(ind), std::get<1>(ind));
+        })
+        .def_property_readonly("shape", [](const Matrix<double, ORDERING::RowMajor>& self) {
+            return std::tuple(self.Rows(), self.Cols());
+        })
     ;
 }
