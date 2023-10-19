@@ -6,5 +6,7 @@
 # import from the installed ASCsoft package:
 from ASCsoft.bla import Matrix, Vector
 
-A = Matrix(2, 3)
+A = Matrix(3, 4)
+A[2, 3] = 4.0
+print(A[2, 3])
 print(A.shape)

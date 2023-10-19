@@ -77,9 +77,14 @@ PYBIND11_MODULE(bla, m) {
     py::class_<Matrix<double, ORDERING::RowMajor>>(m, "Matrix")
         .def(py::init<size_t, size_t>(), py::arg("rows"), py::arg("cols"), "create matrix of the given size")
 
-        .def("__getitem__", [](Matrix<double, ORDERING::RowMajor> self, std::tuple<int, int> ind) {
+        .def("__getitem__", [](Matrix<double, ORDERING::RowMajor>& self, std::tuple<int, int> ind) {
             return self(std::get<0>(ind), std::get<1>(ind));
         })
+
+        .def("__setitem__", [](Matrix<double, ORDERING::RowMajor>& self, std::tuple<int, int> ind, double v) {
+            self(std::get<0>(ind), std::get<1>(ind)) = v;
+        })
+
         .def_property_readonly("shape", [](const Matrix<double, ORDERING::RowMajor>& self) {
             return std::tuple(self.Rows(), self.Cols());
         })
