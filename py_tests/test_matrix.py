@@ -22,14 +22,36 @@ print(sum[2, 3])
 v = Vector(3)
 v[:] = 7
 
-import pickle
-f = open("file.txt", 'wb')
-pickle.dump([2,"hello", A], f)
-print("STORED")
-print(A)
-del f
 
-f2 = open("file.txt", 'rb')
-val = pickle.load(f2)
-print(val)
-print(val[2])
+
+A = Matrix(2, 2)
+B = Matrix(2, 3)
+
+A[0, 0] = 2
+A[0, 1] = 0
+A[1, 0] = 0
+A[1, 1] = 1
+
+B[0, 0] = 0
+B[0, 1] = 1
+B[0, 2] = 2
+B[1, 0] = 3
+B[1, 1] = 4
+B[1, 2] = 5
+
+print("PRODUCT")
+print(A)
+print(B)
+print(A@B)
+
+# import pickle
+# f = open("file.txt", 'wb')
+# pickle.dump([2,"hello", A], f)
+# print("STORED")
+# print
+# del f
+
+# f2 = open("file.txt", 'rb')
+# val = pickle.load(f2)
+# print(val)
+# print(val[2])

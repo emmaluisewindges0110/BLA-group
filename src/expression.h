@@ -116,7 +116,7 @@ namespace ASC_bla
             return sum;
         }
         size_t Rows() const { return a_.Rows(); }
-        size_t Cols() const { return a_.Cols(); }
+        size_t Cols() const { return b_.Cols(); }
     };
 
     template <typename TA, typename TB>
