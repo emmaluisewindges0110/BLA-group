@@ -6,100 +6,124 @@ namespace ASC_bla
 {
 
     template <typename T>
-    class VecExpr
-    {
+    class VecExpr {
     public:
-        auto Upcast() const { return static_cast<const T&> (*this); }
-        size_t Size() const { return Upcast().Size(); }
-        auto operator() (size_t i) const { return Upcast()(i); }
+        auto Upcast() const {
+            return static_cast<const T&> (*this);
+        }
+
+        size_t Size() const {
+            return Upcast().Size();
+        }
+
+        auto operator() (size_t i) const {
+            return Upcast()(i);
+        }
     };
 
 
     template <typename TA, typename TB>
-    class SumVecExpr : public VecExpr<SumVecExpr<TA,TB>>
-    {
+    class SumVecExpr : public VecExpr<SumVecExpr<TA,TB>> {
         TA a_;
         TB b_;
     public:
-        SumVecExpr (TA a, TB b) : a_(a), b_(b) { }
+        SumVecExpr (TA a, TB b) : a_(a), b_(b) {}
 
-        auto operator() (size_t i) const { return a_(i)+b_(i); }
-        size_t Size() const { return a_.Size(); }
+        auto operator() (size_t i) const {
+            return a_(i) + b_(i);
+        }
+
+        size_t Size() const {
+            return a_.Size();
+        }
     };
 
     template <typename TA, typename TB>
-    auto operator+ (const VecExpr<TA> & a, const VecExpr<TB> & b)
-    {
+    auto operator+ (const VecExpr<TA>& a, const VecExpr<TB>& b) {
         return SumVecExpr(a.Upcast(), b.Upcast());
     }
 
-
-
-
     template <typename TSCAL, typename TV>
-    class ScaleVecExpr : public VecExpr<ScaleVecExpr<TSCAL,TV>>
-    {
+    class ScaleVecExpr : public VecExpr<ScaleVecExpr<TSCAL,TV>> {
         TSCAL scal_;
         TV vec_;
     public:
-        ScaleVecExpr (TSCAL scal, TV vec) : scal_(scal), vec_(vec) { }
+        ScaleVecExpr (TSCAL scal, TV vec) : scal_(scal), vec_(vec) {}
 
-        auto operator() (size_t i) const { return scal_*vec_(i); }
-        size_t Size() const { return vec_.Size(); }
+        auto operator() (size_t i) const {
+            return scal_*vec_(i);
+        }
+
+        size_t Size() const {
+            return vec_.Size();
+        }
     };
 
     template <typename T>
-    auto operator* (double scal, const VecExpr<T> & v)
-    {
+    auto operator* (double scal, const VecExpr<T>& v) {
         return ScaleVecExpr(scal, v.Upcast());
     }
 
-
-
     template <typename T>
-    std::ostream & operator<< (std::ostream & ost, const VecExpr<T> & v)
-    {
-        if (v.Size() > 0)
+    std::ostream& operator<< (std::ostream& ost, const VecExpr<T>& v) {
+        if (v.Size() > 0) {
             ost << v(0);
-        for (size_t i = 1; i < v.Size(); i++)
+        }
+        for (size_t i = 1; i < v.Size(); i++) {
             ost << ", " << v(i);
+        }
         return ost;
     }
 
     template <typename T>
-    class MatrixExpr
-    {
+    class MatrixExpr {
     public:
-        auto Upcast() const { return static_cast<const T&> (*this); }
-        size_t Rows() const { return Upcast().Rows(); }
-        size_t Cols() const { return Upcast().Cols(); }
-        auto operator() (size_t i, size_t j) const { return Upcast()(i, j); }
+        auto Upcast() const {
+            return static_cast<const T&> (*this);
+        }
+
+        size_t Rows() const {
+            return Upcast().Rows();
+        }
+
+        size_t Cols() const {
+            return Upcast().Cols();
+        }
+
+        auto operator() (size_t i, size_t j) const {
+            return Upcast()(i, j);
+        }
     };
 
 
     template <typename TA, typename TB>
-    class SumMatrixExpr : public MatrixExpr<SumMatrixExpr<TA, TB>>
-    {
+    class SumMatrixExpr : public MatrixExpr<SumMatrixExpr<TA, TB>> {
         TA a_;
         TB b_;
     public:
         SumMatrixExpr (TA a, TB b) : a_(a), b_(b) {}
 
-        auto operator() (size_t i, size_t j) const { return a_(i, j) + b_(i, j); }
-        size_t Rows() const { return a_.Rows(); }
-        size_t Cols() const { return a_.Cols(); }
+        auto operator() (size_t i, size_t j) const {
+            return a_(i, j) + b_(i, j);
+        }
+
+        size_t Rows() const {
+            return a_.Rows();
+        }
+
+        size_t Cols() const {
+            return a_.Cols();
+        }
     };
 
     template <typename TA, typename TB>
-    auto operator+ (const MatrixExpr<TA> & a, const MatrixExpr<TB> & b)
-    {
+    auto operator+ (const MatrixExpr<TA>& a, const MatrixExpr<TB>& b) {
         return SumMatrixExpr(a.Upcast(), b.Upcast());
     }
 
 
     template <typename TA, typename TB>
-    class MatrixMatrixProdExpr : public MatrixExpr<MatrixMatrixProdExpr<TA, TB>>
-    {
+    class MatrixMatrixProdExpr : public MatrixExpr<MatrixMatrixProdExpr<TA, TB>> {
         TA a_;
         TB b_;
     public:
@@ -115,20 +139,24 @@ namespace ASC_bla
             }
             return sum;
         }
-        size_t Rows() const { return a_.Rows(); }
-        size_t Cols() const { return b_.Cols(); }
+
+        size_t Rows() const {
+            return a_.Rows();
+        }
+
+        size_t Cols() const {
+            return b_.Cols();
+        }
     };
 
     template <typename TA, typename TB>
-    auto operator* (const MatrixExpr<TA>& a, const MatrixExpr<TB>& b)
-    {
+    auto operator* (const MatrixExpr<TA>& a, const MatrixExpr<TB>& b) {
         return MatrixMatrixProdExpr(a.Upcast(), b.Upcast());
     }
 
 
     template <typename TA, typename TB>
-    class MatrixVectorProdExpr : public VecExpr<MatrixVectorProdExpr<TA, TB>>
-    {
+    class MatrixVectorProdExpr : public VecExpr<MatrixVectorProdExpr<TA, TB>> {
         TA a_;
         TB b_;
     public:
@@ -144,19 +172,15 @@ namespace ASC_bla
             }
             return sum;
         }
-        size_t Size() const { return a_.Rows(); }
+        size_t Size() const {
+            return a_.Rows();
+        }
     };
 
     template <typename TA, typename TB>
-    auto operator* (const MatrixExpr<TA>& a, const VecExpr<TB>& b)
-    {
+    auto operator* (const MatrixExpr<TA>& a, const VecExpr<TB>& b) {
         return MatrixVectorProdExpr(a.Upcast(), b.Upcast());
     }
-
-
-
-
-
 
     // Output stream operator for easy printing
     template <typename T>

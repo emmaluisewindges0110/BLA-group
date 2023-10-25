@@ -9,18 +9,16 @@ namespace ASC_bla {
     enum class ORDERING { ColMajor, RowMajor };
 
     template <typename T, ORDERING ORD>
-    class MatrixView : public MatrixExpr<MatrixView<T, ORD>>
-    {
-        protected:
+    class MatrixView : public MatrixExpr<MatrixView<T, ORD>> {
+    protected:
         T* data_;
         size_t rows_, cols_, dist_;
 
-        public:
+    public:
         MatrixView (size_t rows, size_t cols, size_t dist, T * data) : data_(data), rows_(rows), cols_(cols), dist_(dist) {}
 
         template <typename TB>
-        MatrixView& operator= (const MatrixExpr<TB>& v2)
-        {
+        MatrixView& operator= (const MatrixExpr<TB>& v2) {
             for (size_t i = 0; i < rows_; i++) {
                 for (size_t j = 0; j < cols_; ++j) {
                     (*this)(i, j) = v2(i, j);
@@ -29,8 +27,7 @@ namespace ASC_bla {
             return *this;
         }
 
-        MatrixView& operator= (T scal)
-        {
+        MatrixView& operator= (T scal) {
             for (size_t i = 0; i < rows_; i++) {
                 for (size_t j = 0; j < cols_; ++j) {
                     (*this)(i, j) = scal;
@@ -39,9 +36,17 @@ namespace ASC_bla {
             return *this;
         }
 
-        auto View() const { return MatrixView(rows_, cols_, dist_, data_); }
-        size_t Rows() const { return rows_; }
-        size_t Cols() const { return cols_; }
+        auto View() const {
+            return MatrixView(rows_, cols_, dist_, data_);
+        }
+
+        size_t Rows() const {
+            return rows_;
+        }
+
+        size_t Cols() const {
+            return cols_;
+        }
 
         T& operator()(size_t i, size_t j) {
             if constexpr (ORD == ORDERING::ColMajor) {
@@ -119,12 +124,12 @@ namespace ASC_bla {
         Matrix(const Matrix& other) : MatrixView<T, ORD>(other.rows_, other.cols_, other.dist_, other.data_) {}
 
         // Move constructor
-        Matrix(Matrix&& other) noexcept :  MatrixView<T, ORD>(other.rows_, other.cols_, other.dist_, std::move(other.data_)) {}
+        Matrix(Matrix&& other) noexcept : MatrixView<T, ORD>(other.rows_, other.cols_, other.dist_, std::move(other.data_)) {}
 
         template <typename TB>
         Matrix(const MatrixExpr<TB>& M) : Matrix(M.Rows(), M.Cols()) {
             // *this = M;
-             for (size_t row = 0; row < M.Rows(); ++row) {
+            for (size_t row = 0; row < M.Rows(); ++row) {
                 for (size_t col = 0; col < M.Cols(); ++col) {
                     (*this)(row, col) = M(row, col);
                 }
@@ -136,8 +141,7 @@ namespace ASC_bla {
 
         // Assignment operator
         using BASE::operator=;
-        Matrix& operator=(const Matrix& other)
-        {
+        Matrix& operator=(const Matrix& other) {
             for (size_t row = 0; row < other.Rows(); ++row) {
                 for (size_t col = 0; col < other.Cols(); ++col) {
                     (*this)(row, col) = other(row, col);
@@ -147,8 +151,7 @@ namespace ASC_bla {
         }
 
         // Assignment operator
-        Matrix& operator=(Matrix&& other)
-        {
+        Matrix& operator=(Matrix&& other) {
             for (size_t row = 0; row < other.Rows(); ++row) {
                 for (size_t col = 0; col < other.Cols(); ++col) {
                     (*this)(row, col) = other(row, col);
