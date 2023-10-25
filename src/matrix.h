@@ -137,7 +137,7 @@ namespace ASC_bla {
         }
 
         // Destructor
-        ~Matrix() = default;
+        ~Matrix() { delete [] data_; }
 
         // Assignment operator
         using BASE::operator=;
