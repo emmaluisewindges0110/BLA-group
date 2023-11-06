@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to ASC-bla's documentation!
+Welcome to bla-group's documentation!
 ===================================
 
 ASC-bla is a C++ library for basic linear algebra operations.
@@ -12,8 +12,8 @@ The library provides template classes **Vector** and **Matrix**.
 Installation is via git-clone:
 
 ..  code-block::
-    
-    git clone https://github.com/TUWien-ASC/ASC-bla.git
+
+    git clone https://github.com/emmaluisewindges0110/BLA-group.git
 
 
 To configure and build some tests do
@@ -25,9 +25,9 @@ To configure and build some tests do
     cd build
     cmake ..
     make
-    
 
-To use ASC-bla in your code, set the compiler include path properly, and include the header files
+
+To use bla-group in your code, set the compiler include path properly, and include the header files
 
 ..  code-block::
 
@@ -37,21 +37,21 @@ To use ASC-bla in your code, set the compiler include path properly, and include
 All objects are implemented in the namespace ASC_bla. To use them with less typing, you can set
 
 ..  code-block::
-    
+
     namespace bla = ASC_bla;
 
 or even
 
 ..  code-block::
-    
+
     using namespace ASC_bla;
 
-    
+
 
 You can create vectors and compute with vectors like:
 
 ..  code-block:: cpp
-                 
+
    Vector<double> x(5), y(5), z(5);
    for (int i = 0; i < x.Size(); i++)
       x(i) = i;
@@ -71,7 +71,7 @@ default is row-major.
        m1(i,j) = i+j;
    m2 = 3.7;
    Matrix product = m1 * m2;
-   
+
 You can extract a rows or a columns from a matrix:
 
 ..  code-block:: cpp
@@ -79,9 +79,9 @@ You can extract a rows or a columns from a matrix:
    Vector col1 = product.Col(1);
 
 
-some changes ...  
+some changes ...
 
-   
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
