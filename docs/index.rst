@@ -92,5 +92,5 @@ Indices and tables
 ==================
 
 * :ref:`genindex`
-* :ref:`_PythonBindings`
+* :ref:`python_bindings`
 * :ref:`search`
