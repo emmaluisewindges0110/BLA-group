@@ -1,4 +1,4 @@
-.. python_bindings:
+.. _Python Bindings:
 
 Python Bindings
 ===================================

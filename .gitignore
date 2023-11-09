@@ -43,11 +43,12 @@
 include/divisible/*
 
 
-## Local 
+## Local
 
 .idea/*.xml
 
 build/**/*
+*/_build/*
 
 include/*
 lib/*

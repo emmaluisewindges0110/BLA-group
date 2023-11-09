@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 Welcome to bla-group's documentation!
-===================================
+=====================================
 
 ASC-bla is a C++ library for basic linear algebra operations.
 The library provides template classes **Vector** and **Matrix**.
@@ -86,11 +86,13 @@ some changes ...
    :maxdepth: 2
    :caption: Contents:
 
+   python_bindings
+
 
 
 Indices and tables
 ==================
 
 * :ref:`genindex`
-* :ref:`python_bindings`
+* :ref:`Python Bindings`
 * :ref:`search`
