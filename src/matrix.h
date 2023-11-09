@@ -48,6 +48,14 @@ namespace ASC_bla {
             return cols_;
         }
 
+        auto Dist() const {
+            return dist_;
+        }
+
+        auto Data() {
+            return data_;
+        }
+
         T& operator()(size_t i, size_t j) {
             if constexpr (ORD == ORDERING::ColMajor) {
                 return data_[i + j * dist_];
