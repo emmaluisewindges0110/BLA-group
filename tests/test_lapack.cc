@@ -39,7 +39,7 @@ int main()
 
     auto start = std::chrono::high_resolution_clock::now();
     for (size_t i = 0; i < runs; i++) {
-        // auto test = bla::Matrix<double, bla::ORDERING::ColMajor>(A * B);
+        // bla::Matrix<double, bla::ORDERING::ColMajor>(A * B);
         MultMatMatLapack(A, B, C);
     }
     auto end = std::chrono::high_resolution_clock::now();

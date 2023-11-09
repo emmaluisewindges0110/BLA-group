@@ -45,6 +45,10 @@ namespace ASC_bla {
             return dist_;
         }
 
+        auto Data() {
+            return data_;
+        }
+
         T& operator()(size_t i) {
             return data_[dist_*i];
         }
