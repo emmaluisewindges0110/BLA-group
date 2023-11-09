@@ -35,6 +35,10 @@ extern "C" {
 namespace ASC_bla
 {
 
+  class T_Lapack { };
+  static constexpr T_Lapack Lapack;
+
+
   // BLAS-1 functions:
 
   /*
@@ -88,8 +92,8 @@ namespace ASC_bla
       dgemm_ (&transa_, &transb_, &n, &m, &k, &alpha,
               a.Data(), &lda, b.Data(), &ldb, &beta, c.Data(), &ldc);
 
-    if (err != 0)
-      throw std::runtime_error(std::string("MultMatMat got error "+std::to_string(err)));
+    // if (err != 0)
+    //   throw std::runtime_error(std::string("MultMatMat got error "+std::to_string(err)));
   }
 
   template <ORDERING OA, ORDERING OB>
