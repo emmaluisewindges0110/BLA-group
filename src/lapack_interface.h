@@ -33,7 +33,7 @@ extern "C" {
 
 
 
-namespace ASC_bla
+namespace pep::bla
 {
 
 	class T_Lapack { };

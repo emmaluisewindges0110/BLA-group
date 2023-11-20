@@ -5,7 +5,7 @@
 
 #include "vector.h" // Assuming your Vector class is in "vector.h"
 
-namespace ASC_bla {
+namespace pep::bla {
     enum class ORDERING { ColMajor, RowMajor };
 
     template <typename T, ORDERING ORD>
@@ -126,7 +126,7 @@ namespace ASC_bla {
         using BASE::data_;
     public:
         // Constructors
-        Matrix(size_t rows, size_t cols) : MatrixView<T, ORD>(rows, cols, (ORD == ASC_bla::ORDERING::ColMajor) ? rows : cols, new T[rows * cols]) {}
+        Matrix(size_t rows, size_t cols) : MatrixView<T, ORD>(rows, cols, (ORD == pep::bla::ORDERING::ColMajor) ? rows : cols, new T[rows * cols]) {}
 
         // Copy constructor
         Matrix(const Matrix& other) : MatrixView<T, ORD>(other.rows_, other.cols_, other.dist_, other.data_) {}

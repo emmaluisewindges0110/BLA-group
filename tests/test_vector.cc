@@ -2,7 +2,7 @@
 #include <vector.h>
 #include <matrix.h>
 
-namespace bla = ASC_bla;
+namespace bla = pep::bla;
 
 
 int main() {

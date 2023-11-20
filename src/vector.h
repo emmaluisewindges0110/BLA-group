@@ -5,7 +5,7 @@
 
 #include "expression.h"
 
-namespace ASC_bla {
+namespace pep::bla {
 
     template <typename T, typename TDIST = std::integral_constant<size_t,1> >
     class VectorView : public VecExpr<VectorView<T,TDIST>> {

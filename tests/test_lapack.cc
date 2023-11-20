@@ -6,10 +6,10 @@
 
 #include <chrono>
 
-using namespace ASC_bla;
+using namespace pep::bla;
 using namespace std;
 
-namespace bla = ASC_bla;
+namespace bla = pep::bla;
 
 int main()
 {

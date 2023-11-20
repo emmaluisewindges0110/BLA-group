@@ -4,7 +4,7 @@
 #include "vector.h"
 #include "matrix.h"
 
-using namespace ASC_bla;
+using namespace pep::bla;
 namespace py = pybind11;
 
 PYBIND11_MODULE(bla, m) {
