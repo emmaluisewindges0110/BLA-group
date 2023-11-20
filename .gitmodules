@@ -1,0 +1,3 @@
+[submodule "lib/PEP-HPC"]
+	path = lib/PEP-HPC
+	url = https://github.com/VoxelPi/PEP-HPC.git
