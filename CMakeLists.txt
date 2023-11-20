@@ -27,5 +27,6 @@ target_link_libraries (test_lapack PUBLIC ${LAPACK_LIBRARIES})
 
 pybind11_add_module(bla src/bind_bla.cpp)
 
-install (TARGETS bla DESTINATION ASCsoft)
-install (FILES src/vector.h DESTINATION ASCsoft/include)
+install (TARGETS bla DESTINATION pepbla)
+install (FILES src/vector.h DESTINATION pepbla/include)
+install (FILES src/matrix.h DESTINATION pepbla/include)

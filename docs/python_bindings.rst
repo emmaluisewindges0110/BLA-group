@@ -14,7 +14,7 @@ You can then import the bindings in your project.
 
 ..  code-block:: python
 
-    from ASCsoft.bla import Vector
+    from pepbla.bla import Vector
 
     x = Vector(3)
     y = Vector(3)

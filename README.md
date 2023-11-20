@@ -1,4 +1,4 @@
-# ASC-bla
+# PEP-BLA
 A simple basic linear algebra implementation using modern C++.
 
 [![Documentation Status](https://readthedocs.org/projects/bla-group/badge/?version=latest)](https://bla-group.readthedocs.io/en/latest/?badge=latest)

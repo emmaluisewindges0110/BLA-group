@@ -12,7 +12,7 @@ To configure and build some tests do
 
 ..  code-block::
 
-    cd ASC-bla
+    cd PEP-BLA
     mkdir build
     cd build
     cmake ..

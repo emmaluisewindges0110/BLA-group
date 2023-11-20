@@ -3,8 +3,8 @@
 # sys.path.append('/home/peter/uni/scicomp/bla-group/build')
 # from bla import Vector
 
-# import from the installed ASCsoft package:
-from ASCsoft.bla import Vector
+# import from the installed pepbla package:
+from pepbla.bla import Vector
 
 x = Vector(3)
 y = Vector(3)

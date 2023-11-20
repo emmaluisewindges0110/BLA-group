@@ -6,12 +6,12 @@ _cmake_args = []
 if 'win32' in sys.platform:
     _cmake_args += ['-G', 'MinGW Makefiles']
 
-    
+
 setup(
-    name="ASCsoft",
+    name="pepbla",
     version="0.0.2",
     author="J. Schoeberl",
     license="MIT",
-    packages=["ASCsoft"],
+    packages=["pepbla"],
     cmake_args=_cmake_args
 )
