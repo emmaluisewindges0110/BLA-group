@@ -2,6 +2,8 @@
 #include <vector.h>
 #include <matrix.h>
 
+#include <simd.h>
+
 namespace bla = pep::bla;
 
 

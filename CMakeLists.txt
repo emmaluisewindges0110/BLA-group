@@ -4,7 +4,7 @@ project(PEP_BLA)
 set (CMAKE_CXX_STANDARD 17)
 set (CMAKE_CXX_STANDARD 17)
 
-include_directories(src)
+include_directories(src "lib/PEP-HPC/src" "lib/PEP-HPC/concurrentqueue")
 
 find_package(Python 3.8 COMPONENTS Interpreter Development REQUIRED)
 

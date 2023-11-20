@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-#include "vector.h" // Assuming your Vector class is in "vector.h"
+#include "vector.h"
 
 namespace pep::bla {
     enum class ORDERING { ColMajor, RowMajor };
