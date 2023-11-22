@@ -39,8 +39,8 @@ int main()
 
     auto start = std::chrono::high_resolution_clock::now();
     for (size_t i = 0; i < runs; i++) {
-        // bla::Matrix<double, bla::ORDERING::ColMajor>(A * B);
-        MultMatMatLapack(A, B, C);
+        bla::Matrix<double, bla::ORDERING::ColMajor>(A * B);
+        //MultMatMatLapack(A, B, C);
     }
     auto end = std::chrono::high_resolution_clock::now();
     double time = std::chrono::duration<double>(end-start).count();

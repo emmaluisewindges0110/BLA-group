@@ -34,8 +34,8 @@ You can create vectors and compute with vectors like:
    cout << "z = " << z << endl;
 
 
-For matrices you can choose between row-major (`RowMajor`) or column-major (`ColMajor`) storage,
-default is row-major.
+For matrices you can choose between row-major (`RowMajor`) or column-major (`ColMajor`) storage.
+Default is row-major. You can add and multiply matrices as follows:
 
 ..  code-block:: cpp
 
@@ -44,7 +44,14 @@ default is row-major.
      for (int j = 0; j < m1.Width(); j++)
        m1(i,j) = i+j;
    m2 = 3.7;
+   Matrix sum = m1 + m2
    Matrix product = m1 * m2;
+
+Operators such as << >> for printing or () for assigning are compatible with matrices:
+..  code-block:: cpp
+   std::cout << "Matrix 1: \n" << m1 << std::endl;
+
+
 
 You can extract a single row or column from a matrix:
 

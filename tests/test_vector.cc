@@ -27,7 +27,7 @@ int main() {
     std::cout << "Matrix2: \n" << Matrix2 << std::endl;
 
     std::cout << "Sum: \n" << (Matrix1 + Matrix2) << std::endl;
-
+    std::cout << "mm-Mult: \n" << (Matrix1 * Matrix2) << std::endl;
     std::cout << "Matrix2 Zeile 3 " << std::endl << Matrix2.Row(3) << std::endl;
     std::cout << "Matrix2 Spalte 2 " << std::endl << Matrix2.Col(2) << std::endl;
 
