@@ -39,7 +39,7 @@ Default is row-major. You can add and multiply matrices as follows:
 
 ..  code-block:: cpp
 
-   Matrix<double,RowMajor> m1(5,3), m2(3,3);
+   Matrix<double,RowMajor> m1(5,5), m2(5,3);
    for (int i = 0; i < m1.Height(); i++)
      for (int j = 0; j < m1.Width(); j++)
        m1(i,j) = i+j;
@@ -49,8 +49,8 @@ Default is row-major. You can add and multiply matrices as follows:
 
 Operators such as << >> for printing or () for assigning are compatible with matrices:
 ..  code-block:: cpp
-   std::cout << "Matrix 1: \n" << m1 << std::endl;
 
+   std::cout << "Matrix 1: \n" << m1 << std::endl;
 
 
 You can extract a single row or column from a matrix:
@@ -70,3 +70,21 @@ You can also extract multiple rows or columns from a matrix:
 
    // Gets the 2 and 5 row of the matrix.
    auto rows = product.Rows(2, 5);
+
+Extracting both rows and columns at once yields a sub-matrix of the original one:
+
+..  code-block:: cpp
+
+   auto sub = m2.rows(1,3).cols(2,4)
+
+Other features are:
+
+Matrix transposition:
+
+..  code-block:: cpp
+
+   sub.T
+Matrix-Vector Multiplication:
+..  code-block:: cpp
+
+   auto res = m2*z
