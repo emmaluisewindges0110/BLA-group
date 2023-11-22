@@ -46,8 +46,20 @@ default is row-major.
    m2 = 3.7;
    Matrix product = m1 * m2;
 
-You can extract a rows or a columns from a matrix:
+You can extract a single row or column from a matrix:
 
 ..  code-block:: cpp
 
    Vector col1 = product.Col(1);
+
+   Vector row2 = product.Row(2);
+
+You can also extract multiple rows or columns from a matrix:
+
+..  code-block:: cpp
+
+   // Gets the 2 and 5 column of the matrix.
+   auto cols = product.Cols(2, 5);
+
+   // Gets the 2 and 5 row of the matrix.
+   auto rows = product.Rows(2, 5);
