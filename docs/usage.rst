@@ -48,9 +48,10 @@ Default is row-major. You can add and multiply matrices as follows:
    Matrix product = m1 * m2;
 
 Operators such as << >> for printing or () for assigning are compatible with matrices:
+
 ..  code-block:: cpp
 
-   std::cout << "Matrix 1: \n" << m1 << std::endl;
+   std::cout << "m1: \n" << m1 << std::endl;
 
 
 You can extract a single row or column from a matrix:
@@ -85,6 +86,7 @@ Matrix transposition:
 
    sub.T
 Matrix-Vector Multiplication:
+
 ..  code-block:: cpp
 
    auto res = m2*z
