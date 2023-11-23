@@ -101,6 +101,10 @@ PYBIND11_MODULE(bla, m) {
             return Matrix<double, ORDERING::RowMajor>(self * other);
         })
 
+        .def("__matmul__", [](Matrix<double, ORDERING::RowMajor>& self, Vector<double>& other) {
+            return Vector<double>(self * other);
+        })
+
         .def("__str__", [](const Matrix<double, ORDERING::RowMajor>& self) {
             std::stringstream str;
             str << self;

@@ -61,3 +61,16 @@ print(A@B)
 # val = pickle.load(f2)
 # print(val)
 # print(val[2])
+
+print("Matrix-Vector Product:")
+A = Matrix(3, 2)
+v = Vector(2)
+A[0, 0] = 1
+A[0, 1] = 0
+A[1, 0] = 0
+A[1, 1] = 2
+A[2, 0] = 0.5
+A[2, 1] = 0.5
+v[0] = 3
+v[1] = 5
+print(A@v)
