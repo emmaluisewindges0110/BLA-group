@@ -8,21 +8,25 @@ from pepbla.bla import Matrix, Vector
 
 A = Matrix(3, 4)
 A[2, 3] = 4.0
-
+for i in range(A.shape[0]):
+    for j in range(A.shape[1]):
+        A[i , j] = i +j -1
 B = Matrix(3, 4)
-B[2, 3] = 2.0
+for i in range(B.shape[0]):
+    for j in range(B.shape[1]):
+        B[i, j] = 2
 
 print(A[2, 3])
 print(A.shape)
 print(A)
 
+print("Sum A + B: \n")
 sum = (A + B)
-print(sum[2, 3])
+print(sum)
 
 v = Vector(3)
 v[:] = 7
-
-
+print("Skalar-vector mult: ", 2 * v)
 
 A = Matrix(2, 2)
 B = Matrix(2, 3)
@@ -39,9 +43,11 @@ B[1, 0] = 3
 B[1, 1] = 4
 B[1, 2] = 5
 
-print("PRODUCT")
+print("Matrix A: \n")
 print(A)
+print("Matrix B: \n")
 print(B)
+print("Product A@B: \n")
 print(A@B)
 
 # import pickle

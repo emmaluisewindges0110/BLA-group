@@ -80,11 +80,13 @@ Extracting both rows and columns at once yields a sub-matrix of the original one
 
 Other features are:
 
-Matrix transposition:
+Matrix transposition by simply changing the ordering (RowMajor/ColMajor) of a matrix:
 
 ..  code-block:: cpp
 
    sub.T
+
+
 Matrix-Vector Multiplication:
 
 ..  code-block:: cpp
