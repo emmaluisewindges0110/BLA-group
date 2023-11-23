@@ -129,23 +129,26 @@ namespace pep::bla {
         Matrix(size_t rows, size_t cols) : MatrixView<T, ORD>(rows, cols, (ORD == pep::bla::ORDERING::ColMajor) ? rows : cols, new T[rows * cols]) {}
 
         // Copy constructor
-        Matrix(const Matrix& other) : MatrixView<T, ORD>(other.rows_, other.cols_, other.dist_, other.data_) {}
+        Matrix(const Matrix& other) : Matrix(other.rows_, other.cols_) {
+            *this = other;
+        }
 
         // Move constructor
-        Matrix(Matrix&& other) noexcept : MatrixView<T, ORD>(other.rows_, other.cols_, other.dist_, std::move(other.data_)) {}
+        Matrix(Matrix&& other) noexcept : MatrixView<T, ORD>(other.rows_, other.cols_, other.dist_, nullptr) {
+            std::swap(data_, other.data_);
+            std::swap(rows_, other.rows_);
+            std::swap(cols_, other.cols_);
+        }
 
         template <typename TB>
         Matrix(const MatrixExpr<TB>& M) : Matrix(M.Rows(), M.Cols()) {
-            // *this = M;
-            for (size_t row = 0; row < M.Rows(); ++row) {
-                for (size_t col = 0; col < M.Cols(); ++col) {
-                    (*this)(row, col) = M(row, col);
-                }
-            }
+            *this = M;
         }
 
         // Destructor
-        ~Matrix() { delete [] data_; }
+        ~Matrix() {
+            delete [] data_;
+        }
 
         // Assignment operator
         using BASE::operator=;
