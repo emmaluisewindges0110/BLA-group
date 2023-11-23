@@ -64,4 +64,40 @@ int main() {
 
     std::cout << "Matrix2.Rows(1, 3).Cols(2, 4).Transpose()" << std::endl;
     std::cout << test2.Transpose() << std::endl;
+
+    {
+        // Test Matrix-Vector product.
+        std::cout << std::endl << "Matrix - Vector product" << std::endl;
+        bla::Matrix<double, bla::ORDERING::ColMajor> A(3, 2);
+        bla::Vector<double> x(2);
+        A(0, 0) = 1;
+        A(0, 1) = 0;
+        A(1, 0) = 0;
+        A(1, 1) = 2;
+        A(2, 0) = 0.5;
+        A(2, 1) = 0.5;
+        x(0) = 3;
+        x(1) = 5;
+        std::cout << A*x << std::endl;
+    }
+
+    {
+        // Test Matrix-Matrix product.
+        std::cout << std::endl << "Matrix - Matrix product" << std::endl;
+        bla::Matrix<double, bla::ORDERING::ColMajor> A(3, 2);
+        bla::Matrix<double, bla::ORDERING::ColMajor> B(2, 2);
+        A(0, 0) = 1;
+        A(0, 1) = 0;
+        A(1, 0) = 0;
+        A(1, 1) = 2;
+        A(2, 0) = 0.5;
+        A(2, 1) = 0.5;
+        B(0, 0) = 0;
+        B(0, 1) = 1;
+        B(1, 0) = 2;
+        B(1, 1) = 0;
+        std::cout << A << std::endl;
+        std::cout << B << std::endl;
+        std::cout << A*B << std::endl;
+    }
 }

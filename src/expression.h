@@ -133,8 +133,8 @@ namespace pep::bla
             auto row = a_.Row(i);
             auto col = b_.Col(j);
 
-            auto sum = 0;
-            for (int k = 0; k < a_.Cols(); ++k) {
+            auto sum = row(0) * col(0);
+            for (int k = 1; k < a_.Cols(); ++k) {
                 sum += row(k) * col(k);
             }
             return sum;
@@ -166,8 +166,8 @@ namespace pep::bla
             auto row = a_.Row(i);
             auto col = b_;
 
-            auto sum = 0;
-            for (int k = 0; k < a_.Cols(); ++k) {
+            auto sum = row(0) * col(0);
+            for (int k = 1; k < a_.Cols(); ++k) {
                 sum += row(k) * col(k);
             }
             return sum;
