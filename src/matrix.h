@@ -2,11 +2,15 @@
 #define FILE_MATRIX_H
 
 #include <iostream>
+#include <simd.h>
 
 #include "vector.h"
 
 namespace pep::bla {
-    enum class ORDERING { ColMajor, RowMajor };
+    enum ORDERING {
+        ColMajor,
+        RowMajor
+    };
 
     template <typename T, ORDERING ORD>
     class MatrixView : public MatrixExpr<MatrixView<T, ORD>> {
@@ -168,5 +172,65 @@ namespace pep::bla {
             return *this;
         }
     };
+
+    // AddMatMatKernel<H,W> (A.Width(), &A(i,0), A.Dist(), &B(0,j), B.dist(), &C(i,j), C.Dist());
+    template<size_t H, size_t W, bool INIT>
+    inline void AddMatMatKernel(size_t A_width, double *A, size_t A_dist, double *B, size_t B_dist, double *C, size_t C_dist) {
+        if constexpr (H != 0 || W != 0) {
+            return;
+        }
+
+        // Initialize SIMD objects.
+        hpc::SIMD<double, W> sum[H];
+        for (size_t j = 0; j < H; ++j) {
+            if constexpr (INIT) {
+                sum[j] = hpc::SIMD<double, W>(0.0);
+            } else {
+                sum[j] = hpc::SIMD<double, W>(C + j * C_dist);
+            }
+        }
+
+        // Calculate multiple vector-vector products.
+        for (size_t i = 0; i < A_width; ++i) {
+            hpc::SIMD<double, W> y(B + i * B_dist);
+
+            for (size_t j = 0; j < H; ++j) {
+                sum[j] = hpc::FMA(hpc::SIMD<double, W>(A + i * A_dist + j), y, sum[j]);
+            }
+        }
+
+        // Store results in C.
+        for (size_t j = 0; j < H; ++j) {
+            sum[j].Store(C + j * C_dist);
+        }
+    }
+
+    template<size_t H, size_t W, bool INIT>
+    void AddMatMat2 (MatrixView<double, ColMajor> A, MatrixView<double, RowMajor> B, MatrixView<double, RowMajor> C) {
+        // constexpr size_t H=4;
+        // constexpr size_t W=12;
+
+        for (size_t j = 0; j+W <= C.Cols(); j += W)
+            for (size_t i = 0; i+H <= C.Rows(); i += H)
+                AddMatMatKernel<H, W, INIT>(A.Cols(), &A(i,0), A.Dist(), &B(0,j), B.Dist(), &C(i,j), C.Dist());
+        // leftover rows and cols
+    }
+
+    void AddMatMat (MatrixView<double, RowMajor> A, MatrixView<double, RowMajor> B, MatrixView<double, RowMajor> C) {
+        constexpr size_t BH=96;
+        constexpr size_t BW=96;
+        alignas (64) double memBA[BH*BW];
+        for (size_t i1 = 0; i1+BH <= A.Rows(); i1 += BH)
+            for (size_t j1 = 0; j1+BW <= A.Rows(); j1 += BW) {
+            size_t i2 = std::min(A.Rows(), i1+BH);
+            size_t j2 = std::min(A.Cols(), j1+BW);
+
+            MatrixView<double, ColMajor> Ablock(i2-i1, j2-j1, BW, memBA);
+            Ablock = A.Rows(i1,i2).Cols(j1,j2);
+            AddMatMat2<4, 12, true>(Ablock, B.Rows(j1,j2), C.Rows(i1,i2));
+        }
+    }
+
+
 }
 #endif
