@@ -66,9 +66,9 @@ namespace pep::bla
     }
 
     template <typename T>
-    T L2Norm(const VecExpr<T> vector) {
-        T sum = 0;
-        for (size_t i = 0; i < vector.Size(); ++i) {
+    auto L2Norm(const VecExpr<T>& vector) {
+        auto sum = std::pow(vector(0), 2);
+        for (size_t i = 1; i < vector.Size(); ++i) {
             sum += std::pow(vector(i), 2);
         }
         return std::sqrt(sum);
