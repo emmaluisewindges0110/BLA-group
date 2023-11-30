@@ -64,6 +64,20 @@ namespace pep::bla {
         auto Slice(size_t first, size_t slice) const {
             return VectorView<T,size_t> (size_/slice, dist_*slice, data_+first*dist_);
         }
+
+        VectorView& operator*=(const T value){
+            for (size_t i = 0; i < size_; i++) {
+                data_[dist_*i] *= value;
+            }
+            return *this;
+        }
+
+        VectorView& operator+=(const VectorView& vector){
+            for (size_t i = 0; i < size_; i++) {
+                data_[dist_*i] += vector[i];
+            }
+            return *this;
+        }
     };
 
     template <typename T>
