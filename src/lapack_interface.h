@@ -116,10 +116,10 @@ namespace pep::bla
 
 	public:
 		LapackLU (Matrix<double,ORD> _a)
-			: a(std::move(_a)), ipiv(a.Height()) {
-			integer m = a.Height();
+			: a(std::move(_a)), ipiv(a.Rows()) {
+			integer m = a.Rows();
 			if (m == 0) return;
-			integer n = a.Width();
+			integer n = a.Cols();
 			integer lda = a.Dist();
 			integer info;
 
@@ -132,7 +132,7 @@ namespace pep::bla
 		// b overwritten with A^{-1} b
 		void Solve (VectorView<double> b) const {
 			char transa =  (ORD == ORDERING::ColMajor) ? 'N' : 'T';
-			integer n = a.Height();
+			integer n = a.Rows();
 			integer nrhs = 1;
 			integer lda = a.Dist();
 			integer ldb = b.Size();
@@ -148,7 +148,7 @@ namespace pep::bla
 		Matrix<double,ORD> Inverse() && {
 			double hwork;
 			integer lwork = -1;
-			integer n = a.Height();
+			integer n = a.Rows();
 			integer lda = a.Dist();
 			integer info;
 
