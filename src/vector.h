@@ -115,7 +115,7 @@ namespace pep::bla {
         Vector(std::initializer_list<T> list) : VectorView<T>(list.size(), new T[list.size()]) {
             size_t cnt = 0;
             for (auto val : list) {
-                (*this)[cnt++] = val;
+                data_[cnt++] = val;
             }
         }
 

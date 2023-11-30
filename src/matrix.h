@@ -196,7 +196,7 @@ namespace pep::bla {
             for (auto row : llist) {
                 int c = 0;
                 for (auto col : row) {
-                    (*this)(r,c++) = col;
+                    (*this)(r, c++) = col;
                 }
                 r++;
             }
