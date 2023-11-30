@@ -182,6 +182,32 @@ namespace pep::bla
         return MatrixVectorProdExpr(a.Upcast(), b.Upcast());
     }
 
+
+    template <typename TSCAL, typename TM>
+    class ScaleMatrixExpr : public MatrixExpr<ScaleMatrixExpr<TSCAL,TM>> {
+        TSCAL scal_;
+        TM matrix_;
+    public:
+        ScaleMatrixExpr(TSCAL scal, TM matrix) : scal_(scal), matrix_(matrix) {}
+
+        auto operator() (size_t i, size_t j) const {
+            return scal_*matrix_(i, j);
+        }
+
+        size_t Rows() const {
+            return matrix_.Rows();
+        }
+
+        size_t Cols() const {
+            return matrix_.Cols();
+        }
+    };
+
+    template <typename T>
+    auto operator* (double scal, const MatrixExpr<T>& matrix) {
+        return ScaleMatrixExpr(scal, matrix.Upcast());
+    }
+
     // Output stream operator for easy printing
     template <typename T>
     std::ostream& operator<<(std::ostream& os, const MatrixExpr<T>& matrix) {
