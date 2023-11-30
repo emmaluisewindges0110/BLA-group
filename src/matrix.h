@@ -6,7 +6,7 @@
 #include "vector.h"
 
 namespace pep::bla {
-    enum class ORDERING { ColMajor, RowMajor };
+    enum ORDERING { ColMajor, RowMajor };
 
     template <typename T, ORDERING ORD>
     class MatrixView : public MatrixExpr<MatrixView<T, ORD>> {
@@ -115,6 +115,10 @@ namespace pep::bla {
             } else {
                 return MatrixView<T, ORDERING::ColMajor>(cols_, rows_, dist_, data_);
             }
+        }
+
+        auto Diag() {
+            return VectorView<T,size_t>(std::min(rows_, cols_), dist_ + 1, data_);
         }
     };
 
