@@ -79,6 +79,14 @@ namespace pep::bla {
             }
             return *this;
         }
+
+        template <typename TB>
+        VectorView& operator-= (const VecExpr<TB>& v2) {
+            for (size_t i = 0; i < size_; i++) {
+                data_[dist_*i] -= v2(i);
+            }
+            return *this;
+        }
     };
 
     template <typename T>

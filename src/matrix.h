@@ -139,6 +139,16 @@ namespace pep::bla {
             }
             return *this;
         }
+
+        template <typename TB>
+        MatrixView& operator-= (const MatrixExpr<TB>& matrix) {
+            for (size_t i = 0; i < rows_; i++) {
+                for (size_t j = 0; j < cols_; j++) {
+                    (*this)(i, j) -= matrix(i, j);
+                }
+            }
+            return *this;
+        }
     };
 
     template <typename T, ORDERING ORD>
