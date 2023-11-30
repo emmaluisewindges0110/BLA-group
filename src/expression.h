@@ -1,6 +1,8 @@
 #ifndef FILE_EXPRESSION_H
 #define FILE_EXPRESSION_H
 
+#include <math.h>
+
 namespace pep::bla
 {
 
@@ -61,6 +63,15 @@ namespace pep::bla
     template <typename T>
     auto operator* (double scal, const VecExpr<T>& v) {
         return ScaleVecExpr(scal, v.Upcast());
+    }
+
+    template <typename T>
+    T L2Norm(const VecExpr<T> vector) {
+        T sum = 0;
+        for (size_t i = 0; i < vector.Size(); ++i) {
+            sum += std::pow(vector(i), 2);
+        }
+        return std::sqrt(sum);
     }
 
     template <typename T>
