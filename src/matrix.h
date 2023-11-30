@@ -1,6 +1,7 @@
 #ifndef FILE_MATRIX_H
 #define FILE_MATRIX_H
 
+#include <initializer_list>
 #include <iostream>
 
 #include "vector.h"
@@ -176,6 +177,29 @@ namespace pep::bla {
         template <typename TB>
         Matrix(const MatrixExpr<TB>& M) : Matrix(M.Rows(), M.Cols()) {
             *this = M;
+        }
+
+        Matrix(std::initializer_list<std::initializer_list<T>> llist) : Matrix<T,ORD>(0, 0) {
+            int h = llist.size();
+            int w = 0;
+            for (auto row : llist) {
+                w = std::max(w, int(row.size()));
+            }
+
+            this->cols_ = w;
+            this->rows_ = h;
+            delete [] this->data_;
+            this->data_ = new T[w * h]
+            (*this) = T(0.0);
+
+            int r = 0;
+            for (auto row : llist) {
+                int c = 0;
+                for (auto col : row) {
+                    (*this)(r,c++) = col;
+                }
+                r++;
+            }
         }
 
         // Destructor

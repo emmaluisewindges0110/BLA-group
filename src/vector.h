@@ -1,6 +1,7 @@
 #ifndef FILE_VECTOR_H
 #define FILE_VECTOR_H
 
+#include <initializer_list>
 #include <iostream>
 
 #include "expression.h"
@@ -109,6 +110,13 @@ namespace pep::bla {
         template <typename TB>
         Vector (const VecExpr<TB>& v) : Vector(v.Size()) {
             *this = v;
+        }
+
+        Vector(std::initializer_list<T> list) : VectorView<T>(list.size(), new T[list.size()]) {
+            size_t cnt = 0;
+            for (auto val : list) {
+                (*this)[cnt++] = val;
+            }
         }
 
         ~Vector () { delete [] data_; }
