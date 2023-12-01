@@ -4,12 +4,10 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <complex>
 
 #include "vector.h"
 #include "matrix.h"
-
-
-#include <complex>
 
 typedef int integer;
 typedef integer logical;
@@ -25,20 +23,14 @@ typedef void VOID;
 typedef int ftnlen;
 typedef int L_fp;  // ?
 
-
 extern "C" {
 #include <clapack.h>
 }
 
-
-
-
-namespace pep::bla
-{
+namespace pep::bla {
 
 	class T_Lapack { };
 	static constexpr T_Lapack Lapack;
-
 
 	// BLAS-1 functions:
 
@@ -48,15 +40,14 @@ namespace pep::bla
 	*/
 	// y += alpha x
 	template <typename SX, typename SY>
-	void AddVectorLapack (double alpha, VectorView<double,SX> x, VectorView<double,SY> y)
-	{
+	void AddVectorLapack (double alpha, VectorView<double,SX> x, VectorView<double,SY> y) {
 		integer n = x.Size();
 		integer incx = x.Dist();
 		integer incy = y.Dist();
-		int err =
-			daxpy_ (&n, &alpha, &x(0),  &incx, &y(0), &incy);
-		if (err != 0)
+		int err = daxpy_ (&n, &alpha, &x(0),  &incx, &y(0), &incy);
+		if (err != 0) {
 			throw std::runtime_error(std::string("daxpy returned errcode "+std::to_string(err)));
+		}
 	}
 
 
@@ -72,10 +63,7 @@ namespace pep::bla
 
 	// c = a*b
 	template <ORDERING OA, ORDERING OB>
-	void MultMatMatLapack (MatrixView<double, OA> a,
-												 MatrixView<double, OB> b,
-												 MatrixView<double, ORDERING::ColMajor> c)
-	{
+	void MultMatMatLapack (MatrixView<double, OA> a, MatrixView<double, OB> b, MatrixView<double, ORDERING::ColMajor> c) {
 		char transa_ = (OA == ORDERING::ColMajor) ? 'N' : 'T';
 		char transb_ = (OB == ORDERING::ColMajor) ? 'N' : 'T';
 
@@ -89,36 +77,29 @@ namespace pep::bla
 		integer ldb = std::max(b.Dist(), 1ul);
 		integer ldc = std::max(c.Dist(), 1ul);
 
-		int err =
-			dgemm_ (&transa_, &transb_, &n, &m, &k, &alpha,
-							a.Data(), &lda, b.Data(), &ldb, &beta, c.Data(), &ldc);
+		int err = dgemm_ (&transa_, &transb_, &n, &m, &k, &alpha, a.Data(), &lda, b.Data(), &ldb, &beta, c.Data(), &ldc);
 
 		// if (err != 0)
 		//   throw std::runtime_error(std::string("MultMatMat got error "+std::to_string(err)));
 	}
 
 	template <ORDERING OA, ORDERING OB>
-	void MultMatMatLapack (MatrixView<double, OA> a,
-												MatrixView<double, OB> b,
-												MatrixView<double, ORDERING::RowMajor> c)
-	{
-		MultMatMatLapack (b.Transpose(), a.Transpose(), c.Transpose());
+	void MultMatMatLapack (MatrixView<double, OA> a, MatrixView<double, OB> b, MatrixView<double, ORDERING::RowMajor> c) {
+		MultMatMatLapack(b.Transpose(), a.Transpose(), c.Transpose());
 	}
-
-
-
-
 
 	template <ORDERING ORD>
 	class LapackLU {
-		Matrix <double, ORD> a;
+		private:
+		Matrix<double, ORD> a;
 		std::vector<integer> ipiv;
 
-	public:
-		LapackLU (Matrix<double,ORD> _a)
-			: a(std::move(_a)), ipiv(a.Rows()) {
+		public:
+		LapackLU (Matrix<double,ORD> _a) : a(std::move(_a)), ipiv(a.Rows()) {
 			integer m = a.Rows();
-			if (m == 0) return;
+			if (m == 0) {
+				return;
+			}
 			integer n = a.Cols();
 			integer lda = a.Dist();
 			integer info;
@@ -130,8 +111,8 @@ namespace pep::bla
 		}
 
 		// b overwritten with A^{-1} b
-		void Solve (VectorView<double> b) const {
-			char transa =  (ORD == ORDERING::ColMajor) ? 'N' : 'T';
+		void Solve (VectorView<double> b) {
+			char transa = (ORD == ORDERING::ColMajor) ? 'N' : 'T';
 			integer n = a.Rows();
 			integer nrhs = 1;
 			integer lda = a.Dist();
@@ -168,10 +149,6 @@ namespace pep::bla
 		// Matrix<double,ORD> UFactor() const { ... }
 		// Matrix<double,ORD> PFactor() const { ... }
 	};
-
-
-
 }
-
 
 #endif
