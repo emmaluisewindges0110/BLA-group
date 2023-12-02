@@ -27,6 +27,13 @@ namespace pep::bla {
             return *this;
         }
 
+        VectorView& operator= (const VectorView& other) {
+            for (size_t i = 0; i < size_; i++) {
+                data_[dist_*i] = other(i);
+            }
+            return *this;
+        }
+
         VectorView& operator= (T scal) {
             for (size_t i = 0; i < size_; i++) {
                 data_[dist_*i] = scal;

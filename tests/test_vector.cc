@@ -100,4 +100,15 @@ int main() {
         std::cout << B << std::endl;
         std::cout << A*B << std::endl;
     }
+
+    {
+        bla::Vector<double> v { 0.0, 0.0 };
+        bla::Vector<double> w { 0.5, 2.0 };
+
+        bla::VectorView<double> x(v);
+        x = w;
+        std::cout << "v = " << v << std::endl;
+        std::cout << "w = " << w << std::endl;
+        std::cout << "x = " << x << std::endl;
+    }
 }
