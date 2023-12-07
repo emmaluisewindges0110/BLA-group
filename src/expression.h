@@ -1,7 +1,7 @@
 #ifndef FILE_EXPRESSION_H
 #define FILE_EXPRESSION_H
 
-#include <math.h>
+#include <cmath>
 
 namespace pep::bla
 {

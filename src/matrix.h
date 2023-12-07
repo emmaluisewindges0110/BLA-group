@@ -198,7 +198,7 @@ namespace pep::bla {
             this->cols_ = w;
             this->rows_ = h;
             delete [] this->data_;
-            this->data_ = new T[w * h]
+            this->data_ = new T[w * h];
             (*this) = T(0.0);
 
             int r = 0;
