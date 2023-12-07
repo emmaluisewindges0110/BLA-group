@@ -119,7 +119,7 @@ namespace pep::bla {
             }
         }
 
-        auto Transpose() {
+        auto Transpose() const {
             if constexpr (ORD == ORDERING::ColMajor) {
                 return MatrixView<T, ORDERING::RowMajor>(cols_, rows_, dist_, data_);
             } else {
@@ -197,6 +197,7 @@ namespace pep::bla {
 
             this->cols_ = w;
             this->rows_ = h;
+            this->dist_ = (ORD == pep::bla::ORDERING::ColMajor) ? rows_ : cols_;
             delete [] this->data_;
             this->data_ = new T[w * h];
             (*this) = T(0.0);
