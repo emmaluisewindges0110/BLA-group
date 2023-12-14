@@ -111,4 +111,9 @@ int main() {
         std::cout << "w = " << w << std::endl;
         std::cout << "x = " << x << std::endl;
     }
+
+    {
+        bla::Vec<3> v { 1.0, 1.5, -1.5 };
+        std::cout << "v = " << v << std::endl;
+    }
 }

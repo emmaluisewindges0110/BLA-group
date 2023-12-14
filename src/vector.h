@@ -145,6 +145,67 @@ namespace pep::bla {
     };
 
 
+    template <size_t T_SIZE, typename T = double>
+    class Vec : public VecExpr<Vec<T_SIZE, T>> {
+    protected:
+        T* data_;
+    public:
+        Vec() : data_(new T[T_SIZE]) {}
+
+        Vec(const Vec& v) : Vec() {
+            *this = v;
+        }
+
+        Vec(Vec&& v) : Vec(nullptr) {
+            std::swap(data_, v.data_);
+        }
+
+        template <typename TB>
+        Vec(const VecExpr<TB>& v) : Vec() {
+            *this = v;
+        }
+
+        template <typename TB>
+        Vec& operator= (const VecExpr<TB>& other) {
+            for (size_t i = 0; i < T_SIZE; i++) {
+                data_[i] = other(i);
+            }
+            return *this;
+        }
+
+        Vec& operator= (const Vec& other) {
+            for (size_t i = 0; i < T_SIZE; i++) {
+                data_[i] = other(i);
+            }
+            return *this;
+        }
+
+        Vec& operator= (T scal) {
+            for (size_t i = 0; i < T_SIZE; i++) {
+                data_[i] = scal;
+            }
+            return *this;
+        }
+
+        Vec(std::initializer_list<T> list) : Vec() {
+            size_t cnt = 0;
+            for (auto val : list) {
+                data_[cnt++] = val; // TODO: Check size.
+            }
+        }
+
+        ~Vec () { delete [] data_; }
+
+        T& operator()(size_t i) {
+            return data_[i];
+        }
+
+        const T& operator()(size_t i) const {
+            return data_[i];
+        }
+    };
+
+
     template <typename ...Args>
     std::ostream& operator<< (std::ostream& ost, const VectorView<Args...>& v) {
         if (v.Size() > 0) {
@@ -152,6 +213,18 @@ namespace pep::bla {
         }
         for (size_t i = 1; i < v.Size(); i++) {
             ost << ", " << v(i);
+        }
+        return ost;
+    }
+
+
+    template <size_t T_SIZE, typename T>
+    std::ostream& operator<< (std::ostream& ost, const Vec<T_SIZE, T>& vec) {
+        if constexpr (T_SIZE > 0) {
+            ost << vec(0);
+        }
+        for (size_t i = 1; i < T_SIZE; i++) {
+            ost << ", " << vec(i);
         }
         return ost;
     }
