@@ -44,6 +44,11 @@ namespace pep::bla
         return SumVecExpr(a.Upcast(), b.Upcast());
     }
 
+    template <typename TA, typename TB>
+    auto operator- (const VecExpr<TA>& a, const VecExpr<TB>& b) {
+        return SumVecExpr(a.Upcast(), ((-1.0) * b).Upcast());
+    }
+
     template <typename TSCAL, typename TV>
     class ScaleVecExpr : public VecExpr<ScaleVecExpr<TSCAL,TV>> {
         TSCAL scal_;

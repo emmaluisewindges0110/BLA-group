@@ -105,6 +105,8 @@ int main() {
         bla::Vector<double> v { 0.0, 0.0 };
         bla::Vector<double> w { 0.5, 2.0 };
 
+        std::cout << "v - w = " << (v - w) << std::endl;
+
         bla::VectorView<double> x(v);
         x = w;
         std::cout << "v = " << v << std::endl;
@@ -115,5 +117,8 @@ int main() {
     {
         bla::Vec<3> v { 1.0, 1.5, -1.5 };
         std::cout << "v = " << v << std::endl;
+
+        v = 0.0;
+        std::cout << "0 = " << v << std::endl;
     }
 }
