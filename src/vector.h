@@ -148,21 +148,46 @@ namespace pep::bla {
     template <size_t T_SIZE, typename T = double>
     class Vec : public VecExpr<Vec<T_SIZE, T>> {
     protected:
-        T* data_;
+        T data_[T_SIZE];
     public:
-        Vec() : data_(new T[T_SIZE]) {}
+        Vec() = default;
 
-        Vec(const Vec& v) : Vec() {
-            *this = v;
+        Vec(const Vec& v) {
+            for (size_t i = 0; i < T_SIZE; ++i) {
+                data_[i] = v(i);
+            }
         }
 
-        Vec(Vec&& v) : Vec(nullptr) {
-            std::swap(data_, v.data_);
+        Vec(Vec&& v) {
+            for (size_t i = 0; i < T_SIZE; ++i) {
+                data_[i] = v(i);
+            }
         }
 
         template <typename TB>
-        Vec(const VecExpr<TB>& v) : Vec() {
-            *this = v;
+        Vec(const VectorView<TB>& v) {
+            for (size_t i = 0; i < T_SIZE; ++i) {
+                data_[i] = v(i);
+            }
+        }
+
+        template <typename TB>
+        Vec(const VecExpr<TB>& v) {
+            for (size_t i = 0; i < T_SIZE; ++i) {
+                data_[i] = v(i);
+            }
+        }
+
+        Vec(std::initializer_list<T> list) {
+            for (size_t i = 0; i < list.size(); ++i) {
+                data_[i] = list.begin()[i];
+            }
+        }
+
+        Vec(T scal) {
+            for (size_t i = 0; i < T_SIZE; ++i) {
+                data_[i] = scal;
+            }
         }
 
         template <typename TB>
@@ -187,21 +212,20 @@ namespace pep::bla {
             return *this;
         }
 
-        Vec(std::initializer_list<T> list) : Vec() {
-            size_t cnt = 0;
-            for (auto val : list) {
-                data_[cnt++] = val; // TODO: Check size.
-            }
-        }
-
-        ~Vec () { delete [] data_; }
-
         T& operator()(size_t i) {
             return data_[i];
         }
 
         const T& operator()(size_t i) const {
             return data_[i];
+        }
+
+        auto Upcast() const {
+            return *this;
+        }
+
+        size_t Size() const {
+            return T_SIZE;
         }
     };
 
